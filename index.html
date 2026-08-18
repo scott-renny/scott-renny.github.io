@@ -11,7 +11,7 @@
 <header class="site-header">
   <a class="brand" href="#top">Scott Renny</a>
   <nav aria-label="Primary navigation">
-    <a href="#about">About</a><a href="#projects">Projects</a><a href="#journal">Journal</a><a href="#certifications">Certifications</a><a href="https://github.com/scott-renny">GitHub</a>
+    <a href="#about">About</a><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#journal">Journal</a><a href="#resume">Resume</a><a href="https://github.com/scott-renny">GitHub</a>
   </nav>
 </header>
 <main id="top">
@@ -28,30 +28,54 @@
   </section>
 
   <section id="projects" class="section">
-    <p class="eyebrow">FEATURED WORK</p><h2>The lab is the portfolio.</h2>
+    <div class="section-heading"><div><p class="eyebrow">FEATURED WORK</p><h2>The lab is the portfolio.</h2></div><a class="text-link" href="https://github.com/scott-renny">View my GitHub <span aria-hidden="true">↗</span></a></div>
     <div class="grid">
-      <article class="card featured"><span class="status">IN PROGRESS</span><h3>Cyber Operations Center Engineering Program</h3><p>An evolving home COC built to bring monitoring, endpoint security, secure remote access, detection engineering, automation and incident response together as one system.</p><p class="tags">SIEM · Wazuh · Linux · Docker · Networking · SOAR</p></article>
-      <article class="card"><span class="status">IN DEVELOPMENT</span><h3>Project Ares</h3><p>An adversary-simulation and detection-validation platform designed to generate realistic activity and test whether my defensive controls actually see what I expect them to see.</p><p class="tags">Proxmox · Detection Validation · Sysmon · SIEM</p></article>
-      <article class="card"><span class="status">BUILDING</span><h3>Automation & SOAR</h3><p>Using n8n as a shared orchestration layer to connect alerts, enrichment, notifications, reporting and eventually automated response without replacing the systems that already do their jobs well.</p><p class="tags">n8n · Wazuh · APIs · Automation</p></article>
-      <article class="card"><span class="status">PLANNED</span><h3>Project Cerberus</h3><p>My Linux engineering workstation and future COC control station. I'm deliberately using the build as a reason to learn Linux properly instead of staying inside what I already know.</p><p class="tags">Linux Mint · Git · Containers · IaC</p></article>
+      <article class="card featured"><div class="card-top"><span class="status">IN PROGRESS</span><span class="project-kind">Home lab program</span></div><h3>Cyber Operations Center Engineering Program</h3><p>An evolving home COC built to bring monitoring, endpoint security, secure remote access, detection engineering, automation and incident response together as one system.</p><p class="tags">SIEM · Wazuh · Linux · Docker · Networking · SOAR</p><a class="card-link" href="#journal">Read the build notes <span aria-hidden="true">→</span></a></article>
+      <article class="card"><div class="card-top"><span class="status">IN DEVELOPMENT</span><span class="project-kind">Detection lab</span></div><h3>Project Ares</h3><p>An adversary-simulation and detection-validation platform designed to generate realistic activity and test whether my defensive controls actually see what I expect them to see.</p><p class="tags">Proxmox · Detection Validation · Sysmon · SIEM</p><span class="availability">Documentation in progress</span></article>
+      <article class="card"><div class="card-top"><span class="status">BUILDING</span><span class="project-kind">Automation</span></div><h3>Automation & SOAR</h3><p>Using n8n as a shared orchestration layer to connect alerts, enrichment, notifications, reporting and eventually automated response without replacing the systems that already do their jobs well.</p><p class="tags">n8n · Wazuh · APIs · Automation</p><span class="availability">Documentation in progress</span></article>
+      <article class="card"><div class="card-top"><span class="status">PLANNED</span><span class="project-kind">Workstation</span></div><h3>Project Cerberus</h3><p>My Linux engineering workstation and future COC control station. I'm deliberately using the build as a reason to learn Linux properly instead of staying inside what I already know.</p><p class="tags">Linux Mint · Git · Containers · IaC</p><span class="availability">Build planned</span></article>
+    </div>
+    <p class="project-note">Code and configuration will be linked here as each project reaches a state that's useful to share. Until then, the journal shows the work without pretending unfinished repos are finished projects.</p>
+  </section>
+
+  <section id="skills" class="section">
+    <p class="eyebrow">SKILLS & TECHNOLOGY</p><h2>What I'm working with.</h2>
+    <p class="section-intro">These are tools and areas I'm using in the lab—not a claim that I've mastered every item.</p>
+    <div class="skills-grid">
+      <div class="skill-group"><h3>Security operations</h3><ul><li>Wazuh SIEM</li><li>Detection engineering</li><li>Sysmon telemetry</li><li>Incident investigation</li></ul></div>
+      <div class="skill-group"><h3>Infrastructure</h3><ul><li>Linux administration</li><li>Proxmox virtualization</li><li>Docker containers</li><li>Networking & DNS</li></ul></div>
+      <div class="skill-group"><h3>Automation & delivery</h3><ul><li>n8n workflows</li><li>API integration</li><li>Git & GitHub</li><li>Infrastructure as code</li></ul></div>
+      <div class="skill-group"><h3>Cloud & learning</h3><ul><li>AWS fundamentals</li><li>Identity & access</li><li>Security architecture</li><li>Technical documentation</li></ul></div>
     </div>
   </section>
 
   <section id="journal" class="section">
-    <p class="eyebrow">ENGINEERING JOURNAL</p><h2>The parts that don't fit in a README.</h2>
-    <p class="section-intro">This is where I'm documenting why I made certain decisions, what broke, how I fixed it, and what I learned along the way.</p>
-    <div class="journal-list">
-      <a class="journal-item" href="journal/why-im-building-a-home-coc.html"><span><small>AUGUST 2026 · COC</small><strong>Why I'm Building a Home Cyber Operations Center</strong><em>The project started smaller than this. Here's how it turned into the backbone of my cybersecurity learning.</em></span><b>→</b></a>
-      <div class="journal-item muted"><span><small>COMING NEXT · ENDPOINT SECURITY</small><strong>Hardening My Own Endpoints Before Pretending to Defend Everyone Else's</strong><em>What changed when I stopped treating endpoint hardening like a checklist.</em></span></div>
-      <div class="journal-item muted"><span><small>COMING NEXT · TROUBLESHOOTING</small><strong>I Broke Paramount+ With Pi-hole</strong><em>A small DNS problem and a useful reminder that security controls still have to let people use the network.</em></span></div>
+    <div class="section-heading"><div><p class="eyebrow">ENGINEERING JOURNAL</p><h2>The parts that don't fit in a README.</h2></div><span class="count">1 published · 2 in the queue</span></div>
+    <p class="section-intro">Build decisions, failed assumptions, troubleshooting notes and the lessons worth keeping.</p>
+    <div class="journal-feature">
+      <a class="journal-card" href="journal/why-im-building-a-home-coc.html"><span class="journal-meta">COC · 8 MIN READ</span><h3>Why I'm Building a Home Cyber Operations Center</h3><p>The project started smaller than this. Here's how it turned into the backbone of my cybersecurity learning.</p><span class="card-link">Read the entry <span aria-hidden="true">→</span></span></a>
+      <div class="journal-queue" aria-label="Upcoming journal entries">
+        <div><small>NEXT · ENDPOINT SECURITY</small><strong>Hardening My Own Endpoints Before Pretending to Defend Everyone Else's</strong></div>
+        <div><small>UPCOMING · TROUBLESHOOTING</small><strong>I Broke Paramount+ With Pi-hole</strong></div>
+      </div>
     </div>
   </section>
 
-  <section id="certifications" class="section split">
-    <div><p class="eyebrow">CERTIFICATIONS & LEARNING</p><h2>Building the theory alongside the lab.</h2></div>
-    <div class="certs"><div><strong>CompTIA Security+</strong><span>Earned · Valid through 2029</span></div><div><strong>AWS Certified AI Practitioner</strong><span>Currently preparing</span></div><div><strong>AWS Security – Specialty</strong><span>Planned</span></div></div>
+  <section id="certifications" class="section">
+    <div class="section-heading"><div><p class="eyebrow">CERTIFICATIONS & LEARNING</p><h2>Building the theory alongside the lab.</h2></div><p class="section-note">One earned. The rest are a public learning plan.</p></div>
+    <div class="cert-grid">
+      <article class="cert earned"><span class="cert-state">EARNED</span><h3>CompTIA Security+</h3><p>Validated foundation across threats, architecture, operations, governance and risk.</p><span class="cert-date">Valid through 2029</span></article>
+      <article class="cert"><span class="cert-state">PREPARING</span><h3>AWS Certified AI Practitioner</h3><p>Currently studying AWS AI and machine-learning concepts, services and responsible use.</p><span class="cert-date">In progress</span></article>
+      <article class="cert"><span class="cert-state">PLANNED</span><h3>AWS Security – Specialty</h3><p>A longer-term goal after building more practical AWS security experience.</p><span class="cert-date">Next stage</span></article>
+    </div>
+  </section>
+
+  <section id="resume" class="section resume-panel">
+    <div><p class="eyebrow">RESUME</p><h2>The downloadable version is coming.</h2><p>I haven't added a résumé file to this site yet. When I do, this section will link to the current version—no stale or placeholder download.</p></div>
+    <div class="resume-actions"><span class="resume-status">No file published yet</span><a class="button" href="https://github.com/scott-renny">View GitHub profile <span aria-hidden="true">↗</span></a></div>
   </section>
 </main>
-<footer><p>Built and maintained by Scott Renny. The site is part of the project too.</p><a href="https://github.com/scott-renny">github.com/scott-renny</a></footer>
+<footer><p>Built and maintained by Scott Renny. The site is part of the project too.</p><div><a href="#top">Back to top ↑</a><a href="https://github.com/scott-renny/scott-renny.github.io">Site source ↗</a></div></footer>
 </body>
 </html>
+
