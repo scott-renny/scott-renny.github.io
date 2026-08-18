@@ -1,0 +1,28 @@
+.journal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.journal-grid .journal-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.journal-grid .journal-card:first-child {
+  grid-column: span 2;
+}
+
+.journal-grid .journal-card .card-link {
+  margin-top: auto;
+}
+
+@media (max-width: 700px) {
+  .journal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .journal-grid .journal-card:first-child {
+    grid-column: span 1;
+  }
+}
