@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Scott Renny reflects on building and documenting his Cyber Operations Center Engineering Program.">
+  <title>Building the Cyber Operations Center Engineering Program | Scott Renny</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<header class="site-header"><a class="brand" href="../index.html">Scott Renny</a><nav aria-label="Primary navigation"><a href="../index.html#projects">Projects</a><a href="../index.html#skills">Skills</a><a href="../index.html#journal">Journal</a><a href="../index.html#resume">Resume</a><a href="https://github.com/scott-renny">GitHub</a></nav></header>
+<main><article class="article">
+  <header><p class="eyebrow">ENGINEERING JOURNAL · AUGUST 2026</p><h1>Building the Cyber Operations Center Engineering Program</h1><p class="dek">The biggest change wasn't installing another security tool. It was deciding that every part of the lab had to belong to the same system—and that “finished” had to mean more than “it runs.”</p></header>
+
+  <p>I had already built pieces of a security lab before this program existed. There were networking projects, monitoring tools, backup work and a home SOC. They taught me a lot, but they also accumulated the kind of problems that are easy to ignore in a personal lab: undocumented dependencies, configuration drift and screenshots that showed a dashboard without proving the system behind it.</p>
+  <p>I reached a point where adding one more service would have made the environment bigger, but not necessarily better. I wanted to know what was actually running, why it was there, how I had validated it and how I would recover it if the next change went badly. That is why I stopped treating the work as a collection of projects and started the <a class="text-link" href="https://github.com/scott-renny/cyber-operations-center-engineering-program">Cyber Operations Center Engineering Program</a>.</p>
+
+  <h2>I chose to rebuild instead of patching around the past</h2>
+  <p>The first difficult decision was a clean-slate rebuild. Incremental repair would have been easier in the short term, but it would also have carried forward things I could no longer explain confidently. I kept the reviewed exports, inventories, evidence and lessons I needed, then rebuilt from a documented baseline.</p>
+  <p>That made the early work slower. Before wiping anything, I needed an inventory, backups and a recovery path. It also gave the later phases a much better foundation. Every service added after that point had a place in the architecture and a record of how it was tested.</p>
+  <p>I moved backup and recovery earlier than a neat roadmap might suggest. Losing a configuration after weeks of work is a convincing lesson, but not one I needed to repeat. The resulting backup phase covers approved server data, a Windows workstation and a laptop, with encrypted versioned snapshots and real restore tests. A successful backup message is useful; getting the files back and comparing them is what made me trust it.</p>
+
+  <h2>What is actually built now</h2>
+  <p>The completed foundation runs on an Ubuntu server named Atlas. Docker and Dockge provide the container platform, while Caddy keeps the management interfaces behind private HTTPS access. WireGuard is the remote entry point, and the firewall limits management access to approved local and VPN paths.</p>
+  <p>The network and security layer now includes Wazuh monitoring, Pi-hole DNS filtering and scheduled ClamAV scanning. I validated the malware path with the harmless EICAR test file and confirmed that the event reached Wazuh. Suricata was introduced carefully after an early capture attempt disrupted the temporary wireless path, and the current wireless design still limits broader packet visibility. Calling that limitation out is more useful than pretending every installed component has perfect coverage.</p>
+  <p>NET-WATCH adds network visibility and service controls. The telemetry phase added Zeek metadata, Prometheus metrics, Grafana dashboards and Graylog aggregation for operational logs that do not belong in Wazuh. The most important result is not the number of dashboards. It is that DNS activity, host and container health, backup status, security alert volume and application logs now have defined places to go.</p>
+  <p>Endpoint engineering is also complete for the current scope: a Windows 11 laptop, a legacy Windows 10 workstation, a Galaxy S25 and a Galaxy Tab A11. Each platform has its own documented baseline and exceptions. The next workstation migration is still planned work, and the later detection, response, automation and cloud phases have not started.</p>
+
+  <h2>The failures became part of the design</h2>
+  <p>One of the more useful moments came when I tried to start Suricata capture on the server's temporary wireless interface. The configuration checked out, but the interface lost usable connectivity. That took SSH and the web dashboards with it. I recovered from the local console and left Suricata disabled until there is a wired capture path.</p>
+  <p>That was a good reminder that a valid configuration is not the same as a safe production change. It also reinforced why remote network work needs a local recovery option and why controls should be introduced in stages.</p>
+  <p>DNS produced its own lesson. After changing the server address, old bookmarks stopped resolving because of a stale hosts-file entry on the administrative workstation. The server was fine; the forgotten local override was the problem. These are small failures, but they are exactly the parts I want to remember because they change how I approach the next build.</p>
+
+  <h2>Documentation is part of the build</h2>
+  <p>I used to think of documentation as the work I would do after the technical part was finished. This program forced me to treat it as a control of its own. Each phase now has objectives, implementation notes, validation, security considerations, evidence boundaries and lessons learned. Architecture decisions record why I accepted a tradeoff instead of leaving the reasoning buried in a terminal history.</p>
+  <p>That also means being careful about what I publish. The repository can show that a control was tested without exposing private addresses, device identifiers, keys, credentials or raw logs. Learning to produce useful evidence without turning the portfolio into a map of the environment has been part of the engineering work.</p>
+
+  <h2>What I would do differently now</h2>
+  <p>I would start with governance, recovery and evidence much sooner. I would be more suspicious of any milestone defined only by installation, and I would separate “configured,” “validated” and “operational” from the beginning. I would also resist adding a tool until I could explain what data it owns and how it fits with the tools already there.</p>
+  <p>The program is still in active development, but it finally has a trustworthy foundation. More importantly, I can point to the repository and show not only what I built, but where it failed, what remains limited and what evidence allowed me to call each completed phase complete. That is the part of the project I am proudest of.</p>
+
+  <p><a class="text-link" href="https://github.com/scott-renny/cyber-operations-center-engineering-program">Explore the COC Engineering Program on GitHub <span aria-hidden="true">↗</span></a></p>
+  <a class="back" href="../index.html#journal">← Back to the engineering journal</a>
+</article></main>
+<footer><p>Built and maintained by Scott Renny.</p><div><a href="../index.html#journal">Journal</a><a href="https://github.com/scott-renny/cyber-operations-center-engineering-program">COC repository ↗</a></div></footer>
+</body>
+</html>
