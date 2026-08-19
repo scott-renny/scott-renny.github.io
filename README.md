@@ -1,6 +1,6 @@
-# Scott Renny — Portfolio
+# Scott Renny — Engineering Journal & Portfolio
 
-Source for [scott-renny.github.io](https://scott-renny.github.io), my public cybersecurity, infrastructure, and automation portfolio.
+Source for [scott-renny.github.io](https://scott-renny.github.io), my cybersecurity engineering journal and project portfolio.
 
 ![Portfolio](https://img.shields.io/badge/type-portfolio-blue) ![Cybersecurity](https://img.shields.io/badge/focus-cybersecurity-2EA44F) ![Infrastructure](https://img.shields.io/badge/focus-infrastructure-orange) ![Automation](https://img.shields.io/badge/focus-automation-purple)
 
