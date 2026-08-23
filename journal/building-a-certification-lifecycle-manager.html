@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Scott Renny documents building and validating a secure certification lifecycle manager with n8n and PostgreSQL as part of Project Daedalus.">
+  <title>Building a Certification Lifecycle Manager That Won't Remind Me Twice | Scott Renny</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<header class="site-header"><a class="brand" href="../index.html">Scott Renny</a><nav aria-label="Primary navigation"><a href="../index.html#projects">Projects</a><a href="../index.html#skills">Skills</a><a href="../index.html#journal">Journal</a><a href="../index.html#resume">Resume</a><a href="https://github.com/scott-renny">GitHub</a></nav></header>
+<main>
+<article class="article">
+  <header><p class="eyebrow">ENGINEERING JOURNAL · AUGUST 2026</p><h1>Building a Certification Lifecycle Manager That Won't Remind Me Twice</h1><p class="dek">What started as an expiry reminder became a small lifecycle system with renewal rules, continuing-education tracking, authenticated updates, reliable delivery and enough test coverage to trust the result.</p></header>
+
+  <p>The second completed automation module in <a class="text-link" href="https://github.com/scott-renny/project-daedalus">Project Daedalus</a> solves a problem that a calendar entry only handles badly: certification renewal is not one date. It includes vendor rules, renewal windows, continuing-education requirements, fees, evidence and a history of what has already been sent.</p>
+
+  <p>I wanted the system to answer a more useful question than “when does this expire?” It needed to tell me whether a certification was on track, how much approved continuing education remained, when action became necessary and whether a reminder had already been delivered.</p>
+
+  <h2>Designing the data before the automation</h2>
+
+  <p>I started with four related record types: certifications, vendor renewal rules, continuing-education activities and reminder history. Keeping them separate avoided duplicating changing vendor requirements inside every certification record. It also meant CE progress could be calculated from approved activities rather than manually maintained as another number that could drift out of date.</p>
+
+  <p>The public repository contains sanitized, storage-independent schemas. The operational records live in a dedicated PostgreSQL service on a private container network. n8n connects with a restricted runtime account that cannot create databases, create roles or act as a superuser. The database is not published on a host port, and its backups are automatically restored into a temporary verification database before they are considered successful.</p>
+
+  <h2>Making updates safe and usable</h2>
+
+  <p>A lifecycle system is not useful if maintaining it requires hand-written database commands. I built an authenticated n8n form for adding or updating records, followed by a validation step and an idempotent database upsert. The form deliberately excludes certificate numbers, verification codes, credentials and supporting documents. It stores only the information the workflow needs.</p>
+
+  <p>The completed form path validates the submission, writes the renewal rule and certification record, and returns a confirmation page. I tested the path with synthetic data first, then added a real certification record after the workflow behaved correctly.</p>
+
+  <h2>The duplicate-reminder problem</h2>
+
+  <p>Sending an email is easy. Proving the workflow will not send the same email every morning is the more interesting part.</p>
+
+  <p>Before delivery, the monitor attempts to claim a deterministic reminder record. If that reminder has already been claimed, the database returns no item and the email path stops. A successful send updates the record to sent; a failure records the failed state. That gives the workflow both idempotency and an audit trail instead of relying on execution history alone.</p>
+
+  <p>A separate error workflow handles production failures so an outage in the main monitor does not disappear silently. The monitor itself runs on a daily schedule, but only records inside an actionable renewal threshold continue to the reminder path.</p>
+
+  <h2>Testing the lifecycle, not just the happy path</h2>
+
+  <p>The validation workflow created synthetic on-track and urgent certifications, added a sample CE activity, calculated remaining credits, exercised reminder claiming, generated the HTML email and confirmed delivery-state recording. I also tested the authenticated record form, production email delivery, database permissions, private network reachability and restore-verified backups.</p>
+
+  <p>The last validation step mattered: remove every synthetic certification, rule, activity and reminder, then query the operational database again. That final query confirmed that only the intended real record remained. The validation workflow stays manual-only so test data cannot be recreated on a schedule.</p>
+
+  <h2>What I learned</h2>
+
+  <p>The largest lesson was that reliability lives between the visible steps. The form, email and schedule are the obvious parts. The controls that make the system trustworthy are input validation, least privilege, deterministic identifiers, delivery-state tracking, targeted cleanup, failure alerts and a backup that has actually been restored.</p>
+
+  <p>DAE-003 is now complete and tested. More importantly, it gave Project Daedalus a reusable pattern for future lifecycle workflows: model the state, restrict access, make repeated execution safe, record outcomes and validate cleanup before calling the module finished.</p>
+
+  <p><a class="text-link" href="https://github.com/scott-renny/project-daedalus">Explore Project Daedalus on GitHub <span aria-hidden="true">↗</span></a></p>
+  <a class="back" href="../index.html#journal">← Back to the engineering journal</a>
+</article>
+</main>
+<footer><p>Built and maintained by Scott Renny.</p><div><a href="../index.html#journal">Journal</a><a href="https://github.com/scott-renny/project-daedalus">Daedalus repository ↗</a></div></footer>
+</body>
+</html>
+
