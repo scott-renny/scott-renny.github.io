@@ -10,8 +10,11 @@ The site highlights evidence-backed projects, engineering journal entries, curre
 
 - `index.html` — portfolio landing page
 - `assets/` — shared styles and site assets
+- `dashboard/` — curated public project-status view
 - `journal/` — engineering journal entries
 
 ## Maintenance
 
 Project status and technology claims should match the corresponding repository documentation. Links should point to published repositories or pages; unfinished downloads are described explicitly rather than exposed as placeholders.
+
+The public dashboard is a sanitized portfolio snapshot. Private project names, detailed execution queues, personal logistics and internal operational data remain in the private control dashboard.
