@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Scott Renny documents completing the physical restoration of Project Atlas v1 and reconciling its public record with the running Ubuntu infrastructure server.">
-  <title>Finishing the Physical Build of Project Atlas v1 | Scott Renny</title>
+  <meta name="description" content="Scott Renny documents completing Project Atlas v1 physical restoration and validating unattended power recovery before leaving for three weeks to train managers and team leads at a new site.">
+  <title>Finishing and Hardening Project Atlas v1 | Scott Renny</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
 <header class="site-header"><a class="brand" href="../index.html">Scott Renny</a><nav aria-label="Primary navigation"><a href="../index.html#projects">Projects</a><a href="../index.html#skills">Skills</a><a href="../index.html#journal">Journal</a><a href="../index.html#resume">Resume</a><a href="https://github.com/scott-renny">GitHub</a></nav></header>
 <main>
 <article class="article">
-  <header><p class="eyebrow">PROJECT ATLAS · AUGUST 2026</p><h1>Finishing the Physical Build of Project Atlas v1</h1><p class="dek">How an older Dell Latitude became the Ubuntu Server backbone for my home Cyber Operations Center—and why finishing the documentation mattered as much as finishing the hardware.</p></header>
+  <header><p class="eyebrow">PROJECT ATLAS · UPDATED SEPTEMBER 2026</p><h1>Finishing and Hardening Project Atlas v1</h1><p class="dek">How an older Dell Latitude became the Ubuntu Server backbone for my home Cyber Operations Center—and how a three-week work trip turned reliability and unattended recovery into real operational requirements.</p></header>
 
   <p>Project Atlas v1 is the infrastructure server behind my home Cyber Operations Center. It started as a used Dell Latitude E7250 and evolved into a primarily headless Ubuntu Server host for core COC services.</p>
 
-  <p>The physical restoration is now complete. The system has 16 GB of DDR3L memory, its original Samsung 256 GB M.2 2242 SATA SSD, supplemental cooling, local maintenance input and display access, a replacement battery and a replacement bottom cover. The internal hardware has also been cleaned, inspected and maintained.</p>
+  <p>The physical restoration is complete. The system has 16 GB of DDR3L memory, its original Samsung 256 GB M.2 2242 SATA SSD, supplemental cooling, local maintenance input and display access, a replacement battery and a replacement bottom cover. The internal hardware has also been cleaned, inspected and maintained.</p>
 
   <h2>Keeping the original SSD was an engineering decision</h2>
 
@@ -31,17 +31,51 @@
 
   <h2>Reconciling the repository with the real system</h2>
 
-  <p>A system audit showed that the repository had drifted behind the running host. Atlas is currently on Ubuntu Server 24.04.4 LTS with a 6.8.0-137-generic kernel, 16 GB of memory and the retained Samsung system SSD. At the time of the audit, it had been up for 20 days.</p>
+  <p>A system audit showed that the repository had drifted behind the running host. Atlas is currently on Ubuntu Server 24.04.4 LTS with 16 GB of memory and the retained Samsung system SSD. At the time of the audit, it had been up for 20 days.</p>
 
   <p>The audit also confirmed that SSH, Docker, WireGuard, Caddy, Prometheus, Node Exporter, Grafana and Wazuh components were active. I used those facts as inventory evidence without moving detailed service configuration into the hardware repository.</p>
 
-  <p>The updated repository now separates three different kinds of truth: facts confirmed by the live audit, physical work I have completed, and operational tests that still require sanitized evidence. That prevents “installed” from quietly becoming “fully validated” in the documentation.</p>
+  <p>The updated repository separates three different kinds of truth: facts confirmed by the live audit, physical work I have completed, and operational tests backed by sanitized evidence. That prevents “installed” from quietly becoming “fully validated” in the documentation.</p>
+
+  <h2>A three-week trip changed the requirement</h2>
+
+  <p>In September, I had a practical reason to push the reliability work further. I was preparing to be away from home for approximately three weeks to support a new site and train managers and team leads. While I was away, I would not be physically available to press a power button, restart Docker, recover DNS or troubleshoot a routine reboot.</p>
+
+  <p>That turned Atlas resilience from a nice homelab improvement into an operational requirement. Instead of adding more features immediately before leaving, I focused on making the infrastructure I already had recover by itself.</p>
+
+  <h2>Designing for unattended recovery</h2>
+
+  <p>The first improvement was power recovery. I enabled Dell BIOS Wake on AC and then tested it physically: Atlas was shut down, AC power was removed, AC was restored, and I deliberately did not press the power button. The system powered itself back on and returned to an administrable state.</p>
+
+  <p>The laptop battery also became useful infrastructure rather than just a laptop component. I used it as a short-duration built-in UPS and added a small systemd watchdog that checks AC and battery state every minute. If AC power is absent and the battery reaches 35 percent or below, Atlas performs a clean shutdown instead of running the battery completely flat.</p>
+
+  <p>I validated the shutdown decision logic safely at representative battery levels rather than intentionally draining the battery just to prove the threshold.</p>
+
+  <h2>Proving the services actually come back</h2>
+
+  <p>Configuration alone was not enough. I performed normal reboot and restored-AC recovery tests and checked the system after it came back.</p>
+
+  <p>SSH, Docker, networking, Tailscale, WireGuard and the power watchdog returned automatically. The production Docker containers—including PostgreSQL for Daedalus, n8n, cAdvisor, Pi-hole and Dockge—use restart policies that bring them back after the host restarts. Pi-hole specifically returned healthy after reboot.</p>
+
+  <p>The final validation showed the operating system in a clean running state with zero failed systemd units.</p>
+
+  <h2>Automatic recovery does not mean automatic change</h2>
+
+  <p>I also reviewed the update policy. Ubuntu security maintenance is allowed to run automatically, but potentially disruptive changes remain deliberate. I am not blindly auto-updating application containers, major database versions, operating-system releases, firmware or BIOS, and the server is not configured to reboot itself automatically after updates.</p>
+
+  <p>During cleanup I also removed an obsolete Docker hello-world test and disabled an IPMI monitoring path that could never work on this Latitude hardware. The unsupported OpenIPMI startup service had been creating a false failed-service state, so it was masked rather than leaving meaningless noise in the system.</p>
+
+  <h2>The lesson</h2>
+
+  <p>This was a useful reminder that reliability engineering is not about adding the most automation possible. It is about deciding what should recover automatically and what should remain under deliberate change control.</p>
+
+  <p>The principle I am carrying forward for Atlas and the rest of the COC is simple: <strong>recovery is automatic, security maintenance is automatic where safe, and potentially disruptive change is deliberate.</strong></p>
+
+  <p>Just as importantly, the work followed a simplicity-first approach. I reused the battery already in the laptop, native BIOS behavior, systemd, Docker restart policies and remote-access tooling that was already installed. I only added a small watchdog where there was an actual gap.</p>
 
   <h2>What remains</h2>
 
-  <p>The physical build, cleaning and maintenance are complete. The remaining closeout work is operational validation: current SSD health, temperatures under load, Wi-Fi continuity, local-console operation, server-duty power behavior and extended reliability evidence.</p>
-
-  <p>The largest lesson from this phase was that a project boundary is a technical control. Keeping the original compatible SSD, accepting Wi-Fi for v1 and leaving the rack replacement to Atlas v2 made the current platform clearer, safer and easier to document honestly.</p>
+  <p>The physical build is complete and the pre-travel unattended-operation milestone has passed. Remaining closeout items are narrower validation tasks such as SSD health evidence, temperature baselines, extended reliability data and a few remaining local-console and power-management checks.</p>
 
   <p><a class="text-link" href="https://github.com/scott-renny/project-atlas">Explore Project Atlas on GitHub <span aria-hidden="true">↗</span></a></p>
   <a class="back" href="../index.html#journal">← Back to the engineering journal</a>
