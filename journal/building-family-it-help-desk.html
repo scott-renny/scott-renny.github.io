@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="From AWS starter labs to a working family help desk: Cognito, Lambda, DynamoDB, SNS, and lessons from validating the complete path.">
+<title>Building a Family IT Help Desk on AWS | Scott Renny</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<header class="site-header"><a class="brand" href="../index.html">Scott Renny</a><nav aria-label="Primary navigation"><a href="../index.html#projects">Projects</a><a href="../index.html#journal">Journal</a><a href="../dashboard/">Dashboard</a><a href="https://github.com/scott-renny">GitHub</a></nav></header>
+<main><article class="article">
+<header><p class="eyebrow">AWS · SEPTEMBER 14, 2026</p><h1>Building a Family IT Help Desk on AWS</h1><p class="dek">A cloud credit exercise became a working application for the people who already treat me as their IT department.</p></header>
+<p>Family IT Help Desk v0.1 is complete. The final acceptance happened on September 13 in Toronto, September 14 UTC: an approved user submitted a ticket, the application returned its ID and priority, the same ticket appeared in DynamoDB, and the notification email arrived.</p>
+<p>That final database check mattered. A convincing success screen was not enough. I wanted the ticket stored and the notification delivered before calling the first version done.</p>
+<h2>The cloud foundation came first</h2>
+<p>I started with account controls and a monthly AWS budget, then built a small Amazon Linux EC2 instance with encrypted storage, SSH restricted to one trusted source, and IMDSv2 required. I connected from PowerShell, inspected Linux and networking, installed a small package, and tested metadata access both without and with a token. When the lab was finished, I terminated the instance and verified that its root volume was gone.</p>
+<p>I also used Nova Micro in Bedrock to review that configuration. The first response included advice that repeated controls already in place and blurred account MFA with SSH access. A corrective prompt improved the answer, but it still needed technical judgment. Two requests were enough to learn something useful; no persistent model deployment was created.</p>
+<h2>A useful reason to learn serverless</h2>
+<p>For Lambda, I wanted something I would actually keep. Family members already ask me about computers, Wi-Fi, printers, phones, accounts and suspicious emails. A small ticket app gave the cloud services a concrete job.</p>
+<p>The first version takes a problem description, calculates priority in the backend, creates a ticket, stores it, emails me, and displays a confirmation. Its graphite, amber and teal interface has some personality, but the humor comes from ordinary code. There is no AI bill attached to each joke.</p>
+<h2>The architecture that actually shipped</h2>
+<p>The browser loads the page from a public Lambda Function URL. Cognito handles sign-in and email verification; membership in ApprovedUsers controls access to the help desk. The browser submits a bearer token to an API Gateway HTTP API. Lambda uses the validated claims, checks approval and input, writes the ticket to DynamoDB, and publishes an SNS email notification. CloudWatch provides the logging path.</p>
+<p>The execution role has table-specific write permission and topic-specific publish permission. The frontend has no client secret. Hiding the form is helpful for the user experience, but the backend authorization check is the real boundary.</p>
+<h2>The mistakes worth keeping</h2>
+<p>One wrong assumption sent the login flow toward a CloudFront address even though no distribution existed. The fix was to use the actual Lambda Function URL consistently in the frontend, Cognito callbacks and CORS. CloudFront is not part of the completed deployment.</p>
+<p>Another issue was protecting the page before the browser could load it and obtain a token. The public page and protected ticket submission needed different treatment. CORS settings also had to be saved as actual console entries, rather than simply typed into the input.</p>
+<p>The interface needed its own corrections. Pending users initially saw content outside the approval panel. Later, future ticket stages appeared before a ticket had reached them. The accepted version shows Stage 1 first, adds Stage 2 after creation, and keeps the later stages hidden.</p>
+<h2>Complete has a boundary</h2>
+<p>The approved-user submission, matching database record and received email close v0.1. This was a small lab acceptance test, not a claim of production readiness or exhaustive security testing. The app is intentionally retained; exact ongoing billing has not yet been reconciled. My target remains $0 additional out-of-pocket cost.</p>
+<p>The last reviewed promotional checkpoint showed three completed activities and $60 in additional credits for Budgets, EC2 and Bedrock. I am keeping the Lambda reward unverified until there is a recorded confirmation. RDS remains a separate planned lab; using DynamoDB does not complete it.</p>
+<h2>Next: a small management loop</h2>
+<p>v0.2 planning has started: an admin identity boundary, listing and opening tickets, and changing Submitted to In Progress to Resolved. That will give the later stages real meaning. Implementation of those admin features is not yet confirmed.</p>
+<p>The optional Bedrock troubleshooting assistant belongs to v0.3, after ticket management works. It will need bounded usage, and security-sensitive or high-priority issues will bypass AI. The help desk must remain useful without it.</p>
+<p>The best result from this session was a working system with a finite first version. I can build on it without pretending that every future idea has to be completed today.</p>
+<p><a class="text-link" href="https://github.com/scott-renny/cloud-engineering-portfolio/tree/main/aws/projects/family-it-helpdesk">Read the Family IT Help Desk case study ↗</a></p>
+<p><a class="text-link" href="https://github.com/scott-renny/cloud-engineering-portfolio">Explore the Cloud Engineering Portfolio ↗</a></p>
+<a class="back" href="../index.html#journal">← Back to the engineering journal</a>
+</article></main>
+<footer><p>Built and maintained by Scott Renny.</p><div><a href="../index.html#journal">Journal</a><a href="https://github.com/scott-renny">GitHub ↗</a></div></footer>
+</body></html>
