@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Completing Family IT Help Desk v0.2: a secure serverless AWS application with authenticated access, backend authorization, persistent tickets, administration and an end-to-end lifecycle.">
+<title>Building a Secure Serverless IT Help Desk on AWS | Scott Renny</title>
+<link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/journal-app.css?v=ucu-20260920-0340">
+</head>
+<body>
+<header class="site-header"><a class="brand" href="../index.html">Scott Renny</a><nav aria-label="Primary navigation"><a href="../index.html#projects">Projects</a><a href="./">Journal</a><a href="../dashboard/">Dashboard</a><a href="https://github.com/scott-renny">GitHub</a></nav></header>
+<main class="article-shell"><aside class="article-rail"><p class="eyebrow">JOURNAL</p><a href="./">← All entries</a><a href="../dashboard/">Project dashboard ↗</a><a href="https://github.com/scott-renny">GitHub ↗</a></aside><article class="article">
+<header><p class="eyebrow">AWS / CLOUD · SEPTEMBER 26, 2026</p><h1>Building a Secure Serverless IT Help Desk on AWS</h1><p class="dek">Closing Family IT Help Desk v0.2 with authenticated administration, backend-enforced security controls and a ticket lifecycle validated from submission through resolution.</p></header>
+
+<p>I am already the unofficial IT department for family and friends. Family IT Help Desk started as a way to turn those scattered support requests into a useful AWS project. By v0.2, it had become a working serverless application with authenticated users, persistent tickets, email notifications, administrative controls and a complete ticket lifecycle.</p>
+
+<p>This entry is the completion record for v0.2. The earlier journal entry documents how the project started and reached its first working version. I wanted to keep that history intact rather than rewrite the original article every time the application grew.</p>
+
+<h2>The completed architecture</h2>
+<p>AWS Lambda provides the backend application logic. API Gateway exposes the protected API. Amazon Cognito handles registration, email verification, authentication and authorization. DynamoDB stores the authoritative ticket records, Amazon SNS provides ticket notifications, and CloudWatch provides the logging and operational visibility needed to troubleshoot the system.</p>
+
+<p>The browser is only one layer of the application. A successful-looking screen is not treated as proof that a ticket exists or that a state transition succeeded. The backend and persisted ticket record remain authoritative.</p>
+
+<h2>Security belongs on the backend</h2>
+<p>Security was part of the design rather than a final checklist. Users can register and verify their email through Cognito, but that alone does not grant access. Membership in <strong>ApprovedUsers</strong> provides an additional approval gate for the Help Desk. Administrative functionality is separated behind a <strong>HelpDeskAdmins</strong> authorization boundary.</p>
+
+<p>The protected API uses JWT-based authentication. The browser uses the OAuth authorization-code flow with PKCE and does not contain a client secret. CORS is restricted to the intended frontend origin, while Lambda performs backend authorization and validation instead of trusting what the browser chooses to display.</p>
+
+<p>Ticket priority is also controlled by the backend. A client cannot simply declare its own priority. Security-related submissions follow a deterministic escalation path to <strong>Critical</strong> priority and present a security warning to the user.</p>
+
+<p>Server-side validation covers required fields, accepted categories and impact values, and request-size limits. During validation I deliberately sent malformed and incomplete requests, invalid category and impact values, and oversized requests to confirm that the API rejected them instead of relying on frontend validation.</p>
+
+<h2>Closing the ticket lifecycle</h2>
+<p>v0.2 added authenticated ticket management and completed the workflow from <strong>Submitted → In Progress → Resolved</strong>. Administrators can retrieve tickets and update their status through protected application paths, while the user-facing interface reflects the resulting state.</p>
+
+<p>The lifecycle was tested end to end rather than as isolated UI actions. A ticket could be submitted, persisted, retrieved, moved into progress, resolved and restored later with the correct authoritative state. A fresh-ticket smoke test was also completed after the temporary debugging instrumentation had been removed.</p>
+
+<h2>When the database and browser disagreed</h2>
+<p>One of the most useful bugs appeared when DynamoDB correctly showed a ticket as <strong>In Progress</strong> while the browser still displayed <strong>Submitted</strong>. That made the distinction between backend truth and presentation state impossible to ignore.</p>
+
+<p>Tracing the restore path showed that the application was obtaining the correct state, but later frontend initialization could overwrite the restored workflow stages. The fix was to establish the default UI state first and restore the authoritative ticket state afterward.</p>
+
+<p>A separate presentation problem came from JavaScript expecting a result-status element that was missing from the HTML. Neither problem required weakening the backend controls. They required following the data across storage, API behavior, application logic and DOM rendering until the layer causing the mismatch was identified.</p>
+
+<h2>Testing more than the happy path</h2>
+<p>The final acceptance work covered the normal lifecycle as well as negative paths: backend field validation, invalid category and impact rejection, oversized-request rejection, security-ticket Critical escalation, persistence, notification behavior, authoritative state restoration and a clean regression smoke test.</p>
+
+<p>That distinction matters to me. “The form submitted once” is not the same acceptance criterion as “the application enforces its rules and restores the correct state after the user leaves and returns.”</p>
+
+<h2>Freezing v0.2</h2>
+<p>Family IT Help Desk v0.2 is now the completed baseline. I am deliberately freezing it instead of immediately adding another feature. The core application works without AI, and that is an architectural requirement rather than a temporary limitation.</p>
+
+<p>A possible v0.3 may add a tightly bounded Amazon Bedrock troubleshooting assistant. If that happens, AI will remain optional, usage will need to be controlled, and security-sensitive or high-priority cases will bypass it. The assistant should enhance a working help desk, not become a dependency for basic support.</p>
+
+<h2>What this project taught me</h2>
+<p>The project began as a Lambda exercise, but the useful learning spread much further: serverless architecture, authentication and authorization, API security, OAuth and PKCE, JWTs, persistence, notifications, input validation, security boundaries, state restoration, negative-path testing and debugging across multiple application layers.</p>
+
+<p>Most importantly, it reinforced a habit I want to keep across the rest of my cloud work: define what “complete” means, validate the system against that boundary, document what failed, and stop adding features long enough to preserve a known-good baseline.</p>
+
+<p>Family IT Help Desk is part of my broader Cloud Engineering Portfolio, where I am documenting the architecture, decisions, testing and troubleshooting behind my hands-on cloud work.</p>
+
+<p><a class="text-link" href="https://github.com/scott-renny/cloud-engineering-portfolio/tree/main/aws/projects/family-it-helpdesk">Family IT Help Desk project documentation ↗</a></p>
+<p><a class="text-link" href="https://github.com/scott-renny/cloud-engineering-portfolio">Explore the Cloud Engineering Portfolio ↗</a></p>
+<a class="back" href="./">← Back to the engineering journal</a>
+</article></main>
+<footer><p>Built and maintained by Scott Renny.</p><div><a href="./">Journal</a><a href="https://github.com/scott-renny">GitHub ↗</a></div></footer>
+</body></html>
