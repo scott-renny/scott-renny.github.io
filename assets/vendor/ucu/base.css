@@ -1,0 +1,119 @@
+/* ==========================================================================
+   UCU Base — reset & typography defaults
+   Requires tokens.css to be loaded first.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ucu-bg);
+  color: var(--ucu-text);
+  font-family: var(--ucu-font-sans);
+  font-size: var(--ucu-fs-base);
+  line-height: var(--ucu-lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: var(--ucu-fw-semibold);
+  line-height: var(--ucu-lh-tight);
+  color: var(--ucu-text);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--ucu-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--ucu-accent-hover);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+code, pre {
+  font-family: var(--ucu-font-mono);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--ucu-border);
+  margin: var(--ucu-space-5) 0;
+}
+
+::selection {
+  background: var(--ucu-accent-soft);
+  color: var(--ucu-text);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--ucu-accent);
+  outline-offset: 2px;
+}
+
+/* Scrollbars — WebKit + Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ucu-scrollbar-thumb) var(--ucu-scrollbar-track);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ucu-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ucu-scrollbar-thumb);
+  border-radius: var(--ucu-radius-full);
+}
+
+/* Utility: screen-reader only content */
+.ucu-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
