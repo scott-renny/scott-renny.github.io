@@ -1,0 +1,161 @@
+/* ==========================================================================
+   UCU Design Tokens — Unified Console UI v0.1.0
+   --------------------------------------------------------------------------
+   Dark is the default theme (applies with no attribute, or data-theme="dark").
+   Light is opt-in: <html data-theme="light">. See docs/THEMING.md.
+   All tokens are namespaced --ucu-*. Components must consume tokens only —
+   never hardcode a color, spacing, or radius value outside this file.
+   ========================================================================== */
+
+:root {
+  /* ---- Layout ---- */
+  --ucu-sidebar-width: 220px;
+  --ucu-content-padding: 32px;
+  --ucu-content-max-width: 1400px;
+  --ucu-control-height: 36px;
+  --ucu-control-height-sm: 30px;
+
+  /* ---- Typography ---- */
+  --ucu-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --ucu-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  --ucu-fs-xs: 0.75rem;   /* 12px */
+  --ucu-fs-sm: 0.8125rem; /* 13px */
+  --ucu-fs-base: 0.875rem;/* 14px */
+  --ucu-fs-md: 1rem;      /* 16px */
+  --ucu-fs-lg: 1.125rem;  /* 18px */
+  --ucu-fs-xl: 1.375rem;  /* 22px */
+  --ucu-fs-2xl: 1.75rem;  /* 28px */
+  --ucu-fs-3xl: 2.25rem;  /* 36px */
+
+  --ucu-fw-normal: 400;
+  --ucu-fw-medium: 500;
+  --ucu-fw-semibold: 600;
+  --ucu-fw-bold: 700;
+
+  --ucu-lh-tight: 1.2;
+  --ucu-lh-normal: 1.5;
+  --ucu-lh-relaxed: 1.7;
+
+  /* ---- Spacing scale ---- */
+  --ucu-space-1: 4px;
+  --ucu-space-2: 8px;
+  --ucu-space-3: 12px;
+  --ucu-space-4: 16px;
+  --ucu-space-5: 20px;
+  --ucu-space-6: 24px;
+  --ucu-space-7: 32px;
+  --ucu-space-8: 40px;
+  --ucu-space-9: 48px;
+  --ucu-space-10: 64px;
+
+  /* ---- Radii ---- */
+  --ucu-radius-sm: 6px;
+  --ucu-radius-md: 10px;
+  --ucu-radius-lg: 14px;
+  --ucu-radius-full: 999px;
+
+  /* ---- Shadows (used sparingly — menus/overlays, not cards) ---- */
+  --ucu-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --ucu-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.36);
+
+  /* ---- Motion ---- */
+  --ucu-transition-fast: 120ms ease;
+  --ucu-transition-base: 200ms ease;
+
+  /* ---- Breakpoints (reference only — CSS vars aren't usable in @media) ---- */
+  /* tablet/mobile collapse: 1024px · small mobile: 640px — see docs/RESPONSIVE.md */
+}
+
+/* ==========================================================================
+   Dark theme (default)
+   ========================================================================== */
+:root,
+:root[data-theme="dark"] {
+  --ucu-bg: #0a0e17;
+  --ucu-sidebar-bg: #070a11;
+  --ucu-surface: #111827;
+  --ucu-surface-alt: #161f38;
+  --ucu-surface-hover: #1a2540;
+
+  --ucu-border: #22304a;
+  --ucu-border-strong: #2e3f5c;
+
+  --ucu-accent: #22d3ee;
+  --ucu-accent-hover: #67e8f9;
+  --ucu-accent-active: #06b6d4;
+  --ucu-accent-contrast: #04141c;
+  --ucu-accent-soft: rgba(34, 211, 238, 0.12);
+
+  --ucu-text: #eef2f8;
+  --ucu-text-muted: #8b9bbd;
+  --ucu-text-faint: #57678a;
+
+  --ucu-success: #34d399;
+  --ucu-success-soft: rgba(52, 211, 153, 0.14);
+  --ucu-warning: #fbbf24;
+  --ucu-warning-soft: rgba(251, 191, 36, 0.14);
+  --ucu-danger: #f87171;
+  --ucu-danger-soft: rgba(248, 113, 113, 0.14);
+  --ucu-info: #60a5fa;
+  --ucu-info-soft: rgba(96, 165, 250, 0.14);
+
+  --ucu-viz-1: #22d3ee;
+  --ucu-viz-2: #818cf8;
+  --ucu-viz-3: #34d399;
+  --ucu-viz-4: #fbbf24;
+  --ucu-viz-5: #f472b6;
+  --ucu-viz-6: #60a5fa;
+
+  --ucu-scrollbar-thumb: #2e3f5c;
+  --ucu-scrollbar-track: transparent;
+  --ucu-overlay: rgba(3, 6, 12, 0.6);
+
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   Light theme (opt-in via data-theme="light")
+   ========================================================================== */
+:root[data-theme="light"] {
+  --ucu-bg: #f5f7fb;
+  --ucu-sidebar-bg: #e6eaf3;
+  --ucu-surface: #ffffff;
+  --ucu-surface-alt: #eef1f8;
+  --ucu-surface-hover: #e9edf6;
+
+  --ucu-border: #d9e0ec;
+  --ucu-border-strong: #c3ccdd;
+
+  --ucu-accent: #0891b2;
+  --ucu-accent-hover: #0e7490;
+  --ucu-accent-active: #0e7490;
+  --ucu-accent-contrast: #ffffff;
+  --ucu-accent-soft: rgba(8, 145, 178, 0.1);
+
+  --ucu-text: #101828;
+  --ucu-text-muted: #4b5872;
+  --ucu-text-faint: #8592aa;
+
+  --ucu-success: #059669;
+  --ucu-success-soft: rgba(5, 150, 105, 0.1);
+  --ucu-warning: #b45309;
+  --ucu-warning-soft: rgba(180, 83, 9, 0.1);
+  --ucu-danger: #dc2626;
+  --ucu-danger-soft: rgba(220, 38, 38, 0.1);
+  --ucu-info: #2563eb;
+  --ucu-info-soft: rgba(37, 99, 235, 0.1);
+
+  --ucu-viz-1: #0891b2;
+  --ucu-viz-2: #6366f1;
+  --ucu-viz-3: #059669;
+  --ucu-viz-4: #b45309;
+  --ucu-viz-5: #db2777;
+  --ucu-viz-6: #2563eb;
+
+  --ucu-scrollbar-thumb: #c3ccdd;
+  --ucu-scrollbar-track: transparent;
+  --ucu-overlay: rgba(16, 24, 40, 0.4);
+
+  color-scheme: light;
+}

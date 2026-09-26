@@ -1,14 +1,16 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<script>(function(){try{var s=localStorage.getItem("ucu-theme");document.documentElement.setAttribute("data-theme",s==="light"?"light":"dark");}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="From AWS starter labs to a working family help desk: Cognito, Lambda, DynamoDB, SNS, and lessons from validating the complete path.">
 <title>Building a Family IT Help Desk on AWS | Scott Renny</title>
-<link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/journal-app.css?v=ucu-20260920-0340">
+<link rel="stylesheet" href="../assets/vendor/ucu/tokens.css"><link rel="stylesheet" href="../assets/vendor/ucu/base.css"><link rel="stylesheet" href="../assets/vendor/ucu/components.css"><link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/journal-app.css?v=ucu-20260926-0100">
 </head>
 <body>
-<header class="site-header"><a class="brand" href="../index.html">Scott Renny</a><nav aria-label="Primary navigation"><a href="../index.html#projects">Projects</a><a href="./">Journal</a><a href="../dashboard/">Dashboard</a><a href="https://github.com/scott-renny">GitHub</a></nav></header>
-<main class="article-shell"><aside class="article-rail"><p class="eyebrow">JOURNAL</p><a href="./">← All entries</a><a href="../dashboard/">Project dashboard ↗</a><a href="https://github.com/scott-renny">GitHub ↗</a></aside><article class="article">
+<header class="site-header"><a class="brand" href="../index.html">Scott Renny</a><nav aria-label="Primary navigation"><a href="../index.html#projects">Projects</a><a href="./">Journal</a><a href="../dashboard/">Dashboard</a><a href="https://github.com/scott-renny">GitHub</a></nav><button type="button" class="ucu-theme-toggle" data-ucu-theme-toggle aria-pressed="false"><span data-ucu-theme-label>Dark mode</span></button></header>
+<main class="article-page"><div class="article-crumbs"><a href="./">← All entries</a><a href="../dashboard/">Project dashboard ↗</a><a href="https://github.com/scott-renny">GitHub ↗</a></div><article class="article">
 <header><p class="eyebrow">AWS · SEPTEMBER 14, 2026</p><h1>Building a Family IT Help Desk on AWS</h1><p class="dek">A cloud credit exercise became a working application for the people who already treat me as their IT department.</p></header>
 <p>Family IT Help Desk v0.1 is complete. The final acceptance happened on September 13 in Toronto, September 14 UTC: an approved user submitted a ticket, the application returned its ID and priority, the same ticket appeared in DynamoDB, and the notification email arrived.</p>
 <p>That final database check mattered. A convincing success screen was not enough. I wanted the ticket stored and the notification delivered before calling the first version done.</p>
@@ -39,4 +41,6 @@
 <a class="back" href="./">← Back to the engineering journal</a>
 </article></main>
 <footer><p>Built and maintained by Scott Renny.</p><div><a href="./">Journal</a><a href="https://github.com/scott-renny">GitHub ↗</a></div></footer>
+<script src="../assets/vendor/ucu/theme.js"></script>
+<script>document.addEventListener("DOMContentLoaded",function(){UCU.theme.init();});</script>
 </body></html>
