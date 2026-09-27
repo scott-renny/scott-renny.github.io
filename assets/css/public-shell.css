@@ -1,0 +1,25 @@
+/* Public portfolio layout built on the unchanged UCU 0.1 components. */
+.ucu-main{max-width:none;margin:0;padding:0}
+.site-context{display:flex;align-items:center;gap:var(--ucu-space-4);margin-bottom:var(--ucu-space-7);font-size:var(--ucu-fs-xs);color:var(--ucu-text-faint);text-transform:uppercase}
+.site-context .ucu-nav-toggle{margin:0;flex-shrink:0}
+.site-environment{margin-left:auto;color:var(--ucu-success);text-transform:none}
+.site-skip{position:fixed;top:var(--ucu-space-3);left:var(--ucu-space-3);z-index:100;transform:translateY(-200%);background:var(--ucu-surface);padding:var(--ucu-space-3);border:1px solid var(--ucu-accent);border-radius:var(--ucu-radius-sm)}
+.site-skip:focus{transform:translateY(0)}
+.ucu-sidebar-close{font-size:var(--ucu-fs-xl)}
+.hero,.dashboard-hero,.resume-intro{padding:0 0 var(--ucu-space-7);max-width:none}
+.hero h1,.dashboard-hero h1,.resume-intro h1,.article h1{font-size:var(--ucu-fs-2xl);line-height:var(--ucu-lh-tight);letter-spacing:normal;margin:0 0 var(--ucu-space-4)}
+.lead,.article .dek{font-size:var(--ucu-fs-md);max-width:80ch}
+.eyebrow{margin-bottom:var(--ucu-space-3)}
+.section,.dashboard-section,.resume-section{padding:var(--ucu-space-7) 0}
+.section h2,.dashboard-section h2,.resume-section>h2,.resume-section .section-heading h2{font-size:var(--ucu-fs-xl);line-height:var(--ucu-lh-tight);letter-spacing:normal}
+.project-grid,.journal-preview-grid{margin-top:var(--ucu-space-5)}
+.skills-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.resume-shell{max-width:none}
+.article{max-width:80ch;padding:var(--ucu-space-6) 0 var(--ucu-space-7);margin:0}
+.article pre{overflow:auto}
+.article ol{list-style:decimal}
+.ucu-content footer{max-width:none;padding:var(--ucu-space-5) 0;margin:var(--ucu-space-7) 0 0;font-size:var(--ucu-fs-xs)}
+[hidden]{display:none!important}
+.ucu-content{overflow-wrap:anywhere}
+@media(max-width:640px){.site-context{gap:var(--ucu-space-3);flex-wrap:wrap}.site-environment{margin-left:0}.skills-grid{grid-template-columns:1fr}.ucu-content footer{padding-left:0;padding-right:0}.ucu-badge{white-space:normal}}
+@media print{.ucu-sidebar,.ucu-sidebar-overlay,.site-context,.site-skip{display:none!important}.ucu-app{display:block;background:white}.ucu-main,.ucu-content{padding:0;margin:0;max-width:none}.ucu-content footer{display:none}.resume-intro h1{font-size:28pt}}
