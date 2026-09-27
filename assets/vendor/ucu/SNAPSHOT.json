@@ -1,0 +1,12 @@
+{
+  "version": "0.1.0",
+  "source_commit": "85a7cf54852b3a0dcb30c481146355554d5fa5f2",
+  "sha256": {
+    "app-shell.js": "99e9c630863cf13fed716ad347ffc2693b72d63fa6b4bbae0cd1241178e230ec",
+    "base.css": "8a718a79809fcb31ba357274f7fac3b0fdcfcac592cf94bf300737876648fff4",
+    "components.css": "1c94e51be3636f8a4f81ee1a3694a8adabb56f5cf59d46c30200001541be1d51",
+    "theme.js": "6aad2c833a878620ec31d5969a5c178f01144e71558bd4bbc0c6d9cd7e1a0b0e",
+    "tokens.css": "9e3d2a1ed19302ceb3d716923cb72392516d264983b1e998ec7b014982bf59fb"
+  },
+  "hash_format": "SHA256 of UTF-8 files with LF line endings"
+}
