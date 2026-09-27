@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<script>(function(){try{var s=localStorage.getItem("ucu-theme");document.documentElement.setAttribute("data-theme",s==="light"?"light":"dark");}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Scott Renny documents building a production-style AI job-search automation platform: deterministic safety gates, grounded generation, reviewer critique, and a security review that caught an overbroad privilege design before it shipped.">
+  <title>Building the AI Job Search Automation Platform | Scott Renny</title>
+  <link rel="stylesheet" href="../assets/vendor/ucu/tokens.css"><link rel="stylesheet" href="../assets/vendor/ucu/base.css"><link rel="stylesheet" href="../assets/vendor/ucu/components.css"><link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/journal-app.css?v=ucu-20260926-0100">
+<link rel="stylesheet" href="../assets/css/public-shell.css"></head>
+<body>
+<a class="site-skip" href="#content">Skip to content</a>
+<div class="ucu-app" data-ucu-app data-public-shell>
+<div class="ucu-sidebar-overlay" data-ucu-nav-close></div>
+<aside class="ucu-sidebar" id="public-navigation" aria-label="Site navigation">
+  <div class="ucu-brand"><a class="ucu-brand-mark" href="../index.html" aria-label="Scott Renny portfolio">S</a><div class="ucu-brand-text"><div class="ucu-brand-name">Scott Renny</div><div class="ucu-brand-subtitle">Personal / Career</div></div><button class="ucu-sidebar-close" type="button" data-ucu-nav-close aria-label="Close navigation">×</button></div>
+  <nav class="ucu-nav" aria-label="Primary"><div class="ucu-nav-section-label">Portfolio console</div><a class="ucu-nav-item" href="../index.html"><span class="ucu-nav-icon" aria-hidden="true">◈</span>Portfolio</a><a class="ucu-nav-item" href="../dashboard/"><span class="ucu-nav-icon" aria-hidden="true">▤</span>Public dashboard</a><a class="ucu-nav-item is-active" href="../journal/" aria-current="page"><span class="ucu-nav-icon" aria-hidden="true">≋</span>Engineering journal</a><a class="ucu-nav-item" href="../certifications/"><span class="ucu-nav-icon" aria-hidden="true">◇</span>Certifications</a><a class="ucu-nav-item" href="../resume/"><span class="ucu-nav-icon" aria-hidden="true">▧</span>Resume</a><div class="ucu-nav-section-label">Explore</div><a class="ucu-nav-item" href="../index.html#projects"><span class="ucu-nav-icon" aria-hidden="true">⌘</span>Featured projects</a><a class="ucu-nav-item" href="../index.html#skills"><span class="ucu-nav-icon" aria-hidden="true">◫</span>Skills</a><a class="ucu-nav-item" href="https://github.com/scott-renny"><span class="ucu-nav-icon" aria-hidden="true">↗</span>GitHub</a></nav>
+  <div class="ucu-sidebar-footer"><button type="button" class="ucu-theme-toggle" data-ucu-theme-toggle aria-pressed="false"><span data-ucu-theme-label>Dark mode</span><span aria-hidden="true">◐</span></button><div class="ucu-system-info"><span>Public portfolio</span><span>GitHub Pages · UCU 0.1</span></div></div>
+</aside>
+<main class="ucu-main" id="top"><div class="ucu-content"><div class="site-context"><button type="button" class="ucu-nav-toggle" data-ucu-nav-open aria-label="Open navigation" aria-controls="public-navigation" aria-expanded="false">☰</button><span>Personal / Career <span aria-hidden="true">/</span> Engineering journal</span><span class="site-environment">● Public portfolio</span></div><div id="content" tabindex="-1" class="article-page"><div class="article-crumbs"><a href="./">← All entries</a><a href="../ai-job-search/">Case study ↗</a><a href="https://github.com/scott-renny/ai-job-search-automation-platform">GitHub ↗</a></div><article class="article">
+  <header><p class="eyebrow">ENGINEERING JOURNAL · SEPTEMBER 2026</p><h1 class="ucu-page-title">Building the AI Job Search Automation Platform</h1><p class="dek">Turning a manual job search into a production-style AI automation platform — deterministic safety gates, grounded generation, reviewer critique, and why a security review catching my own overbroad privilege design was the best thing that happened to it.</p></header>
+
+  <p>Actively job searching well takes real, repeated effort: finding relevant postings, evaluating fit honestly, producing a genuinely tailored application for each one, and tracking status across dozens of open threads. Doing that manually doesn't scale, and doing it with a fragile personal script just trades one set of problems for another — silent failures, lost work, and no real safety net around the one action that actually matters: submitting something on my behalf.</p>
+
+  <p>I wanted to bring real production-engineering discipline to that problem instead: checkpointing, provider fallback, least privilege, automated testing — the same standards I try to hold my infrastructure work to, applied to my own career.</p>
+
+  <h2>What I built</h2>
+
+  <p>The platform discovers postings, deduplicates them against persistent state, filters them through deterministic eligibility rules before any AI call is made, scores the survivors for fit with an LLM, and generates tailored application content from my own verified background — a pattern I call <strong>Grounded Application Document Generation</strong>. Generation is explicitly constrained to that verified information and passes through an independent AI reviewer pass before anything is finalized. It's a disciplined process-and-review safeguard, not a claim that fabrication is technically impossible, and not a deterministic fact-checker.</p>
+
+  <p>Once a document is drafted and validated, it runs through a chain of submission safety gates — CAPTCHA and MFA detection, a completeness check, per-platform rate limits — and only proceeds to automated browser submission if every one of them clears. The moment anything is uncertain, it stops and hands the fully-prepared item back to me instead of guessing. I call that <strong>Human Authority at Consequential Boundaries</strong>: the platform is not, and isn't presented as, fully autonomous.</p>
+
+  <h2>The problem that taught me the most</h2>
+
+  <p>One operation genuinely needed elevated privilege: encrypting an account-creation credential using the host's native secret-sealing mechanism, which the automation's own service account couldn't call directly. My first design considered a privilege-escalation rule granting that service account permission to run the encryption tool itself.</p>
+
+  <p>On review, I caught the problem before it shipped: the way that privilege mechanism matches commands doesn't restrict which target file or option follows the granted command. As drafted, the rule would have handed the service account a general-purpose "decrypt or encrypt anything on this host using this mechanism" capability — not "manage this one application's own credentials," which was the actual requirement.</p>
+
+  <p>I replaced it with a minimal, single-purpose, root-owned helper that takes no command-line arguments at all, re-validates every field itself regardless of what the caller already checked, and operates only inside one directory it alone controls. The privilege grant names only that exact helper — nothing broader.</p>
+
+  <p>I don't think the story worth telling is "I designed it right the first time." It's that a review caught a real mistake before it reached production, and I can explain exactly why the fix is narrower and better. That's the judgment a security-conscious engineering process is actually supposed to produce.</p>
+
+  <h2>Reliability problems that had nothing to do with AI</h2>
+
+  <p>Some of the hardest bugs were entirely mundane. Early automation shared one interactive coding-assistant session's usage quota and process lifecycle — and both failed for real, mid-run, more than once, taking hours of progress with them. Fixing that meant moving every stage to standalone, checkpointed processes with their own AI-provider fallback and proper OS-service-managed execution, not tied to whatever happened to start them.</p>
+
+  <p>A subtler one: runtime state files became silently unreadable to one system identity the moment a <em>different</em> identity next rewrote them, because a standard atomic-write pattern creates its temp file at a fixed, restrictive permission mode regardless of the process's own configured permissions. Invisible in single-user development, real the moment two identities were genuinely in play. The fix is now a single shared, tested primitive every writer in the system uses.</p>
+
+  <h2>What's public now, and what keeps evolving</h2>
+
+  <p>The platform itself is an operational private system I run on my own schedule; the sanitized public showcase — architecture, security design, engineering-story write-ups, a synthetic-data dashboard demo, and real (unrounded) test statistics — is now published. Publishing the showcase doesn't mean development stopped; it means the parts worth sharing publicly are documented and safe to share, while the underlying platform keeps evolving.</p>
+
+  <h2>What I learned</h2>
+
+  <p>The AI parts of this system — ranking, drafting, reviewing — are a small part of what actually makes it trustworthy. The larger share is ordinary production engineering: deterministic rules wherever a fixed rule can substitute for a judgment call, fail-closed behavior everywhere an external dependency can be unavailable, least privilege end to end, and being honest in the documentation about exactly what a safeguard does and doesn't guarantee. Being precise about that — rather than rounding a disciplined process up to a mechanical guarantee — is part of the engineering, not just the writing.</p>
+
+  <p><a class="text-link" href="../ai-job-search/">Read the full case study <span aria-hidden="true">→</span></a></p>
+  <p><a class="text-link" href="https://github.com/scott-renny/ai-job-search-automation-platform">Explore the public showcase on GitHub <span aria-hidden="true">↗</span></a></p>
+  <a class="back" href="./">← Back to the engineering journal</a>
+</article>
+</div>
+<footer><p>Built and maintained by Scott Renny.</p><div><a href="./">Journal</a><a href="../ai-job-search/">Case study</a><a href="https://github.com/scott-renny/ai-job-search-automation-platform">Showcase repository ↗</a></div></footer></div></main></div>
+<script src="../assets/vendor/ucu/app-shell.js"></script><script src="../assets/js/public-shell.js"></script></body>
+</html>
