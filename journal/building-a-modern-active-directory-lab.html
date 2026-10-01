@@ -19,7 +19,7 @@
   <div class="ucu-sidebar-footer"><button type="button" class="ucu-theme-toggle" data-ucu-theme-toggle aria-pressed="false"><span data-ucu-theme-label>Dark mode</span><span aria-hidden="true">◐</span></button><div class="ucu-system-info"><span>Public portfolio</span><span>GitHub Pages · UCU 0.1</span></div></div>
 </aside>
 <main class="ucu-main" id="top"><div class="ucu-content"><div class="site-context"><button type="button" class="ucu-nav-toggle" data-ucu-nav-open aria-label="Open navigation" aria-controls="public-navigation" aria-expanded="false">☰</button><span>Personal / Career <span aria-hidden="true">/</span> Engineering journal</span><span class="site-environment">● Public portfolio</span></div><div id="content" tabindex="-1" class="article-page"><div class="article-crumbs"><a href="./">← All entries</a><a href="../dashboard/">Project dashboard ↗</a><a href="https://github.com/scott-renny">GitHub ↗</a></div><article class="article">
-  <header><p class="eyebrow">COC · UPDATED OCTOBER 1, 2026</p><h1 class="ucu-page-title">Building a Modern Active Directory Attack-and-Defense Lab</h1><p class="dek">Phase 10 now has a patched, hardened Windows Server 2025 and Windows 11 identity baseline ready for the next chapter: controlled attack, detection, investigation and remediation.</p></header>
+  <header><p class="eyebrow">COC · SEPTEMBER 14, 2026</p><h1 class="ucu-page-title">Building a Modern Active Directory Attack-and-Defense Lab</h1><p class="dek">Phase 10 is turning a Windows Server 2025 domain into a place to learn identity administration, privilege separation and the attack paths defenders actually need to understand.</p></header>
 
   <p>I started Phase 10 of my Cyber Operations Center Engineering Program with an older Active Directory attack-lab outline. Instead of reproducing it exactly, I rebuilt the plan around Windows Server 2025, Windows 11, modern privilege separation and a clear distinction between secure identities and intentionally vulnerable ones.</p>
 
@@ -45,30 +45,8 @@
 
   <p>That means the later password-spray exercise has to respect the defensive policy rather than blindly hammering authentication attempts. The lab is being built so the offensive action, the Windows Security events and the defensive response all connect to one another.</p>
 
-  <h2>Turning the design into a real workstation-admin model</h2>
-  <p>I built a Windows 11 Enterprise client, joined it to the domain and moved it into the workstation OU. A dedicated GPO now maps the workstation Domain Local admin group into the machine's built-in Administrators group. I validated the full AGDLP path from the separate admin identity through the Global and Domain Local groups to local workstation administration, while a normal employee account remained non-administrative.</p>
-
-  <h2>An unexpected domain join exposed a useful default</h2>
-  <p>During the client join, a normal user credential unexpectedly worked. Rather than treating that as a successful join and moving on, I traced it to Active Directory's machine-account quota. The domain still had <code>ms-DS-MachineAccountQuota</code> set to 10. I reduced it to zero and delegated workstation computer-object administration explicitly to the workstation-admin role on the workstation OU.</p>
-
-  <p>That was one of the best lessons in this phase so far: a configuration can behave exactly as designed and still be broader than the administrative model I want. The remediation replaced an implicit default capability with deliberate role-based delegation.</p>
-
-  <h2>Keeping Tier-0 off ordinary workstations</h2>
-  <p>I added a privileged-logon restriction GPO that denies the Tier-0 group local and Remote Desktop logon to ordinary workstations. I tested it directly: the Tier-0 identity was rejected by WIN11-CLIENT, while the delegated workstation-admin identity could still sign in and administer the machine.</p>
-
-  <h2>Instrumenting the environment before attacking it</h2>
-  <p>A dedicated Advanced Audit Policy GPO is now applied to the domain controller and workstation. It records the authentication, Kerberos, lockout, account and group management, process-creation, policy-change and system events needed for the defensive half of the lab. This gives me a known telemetry baseline before generating attack activity.</p>
-
-  <h2>Fixing a multihomed domain-controller DNS problem</h2>
-  <p>The final validation uncovered another issue: DC01 was publishing its VirtualBox NAT IPv4 and IPv6 addresses in authoritative AD DNS alongside the isolated lab address. Disabling ordinary DNS registration on the NAT NIC was not enough; forced domain-controller registration reproduced the unwanted records.</p>
-
-  <p>I restricted the DNS Server listener to the AD lab interface, restarted DNS and deliberately forced registration again. This time the NAT records stayed gone. From WIN11-CLIENT, <code>dc01.corp.lab.test</code> resolved only to <code>10.10.10.10</code>, and the domain secure channel remained healthy. Core AD/DNS services and <code>dcdiag /test:Connectivity</code> also passed.</p>
-
-  <h2>The pre-attack checkpoint</h2>
-  <p>Both Windows systems were patched and cleanly powered down, then captured as <code>Pre-Attack Identity Baseline</code> VirtualBox snapshots. That creates a deliberate boundary in the project: the environment has been built, administered, hardened, instrumented, troubleshot and validated before any adversary simulation begins.</p>
-
   <h2>Where Phase 10 goes next</h2>
-  <p>The next chapter starts with the isolated Kali attacker and telemetry validation, followed by controlled password-spray, Kerberoasting and credential-access exercises. The goal is not simply to execute attacks: each exercise will connect the offensive action to Windows/Wazuh evidence, investigation, remediation and an incident-response record. Greenbone/OpenVAS vulnerability-management practice follows later in the phase.</p>
+  <p>The domain controller is healthy, the core identity model is in place and PowerShell 7.6.6 is installed alongside Windows PowerShell. The next session starts with GPO-based privileged-logon boundaries and hardening. After that I will build the Windows 11 client and Kali attacker, connect Wazuh and Sysmon telemetry, run controlled password-spray and Kerberoasting exercises, write incident-response records and add Greenbone/OpenVAS vulnerability-management practice.</p>
 
   <p>The larger lesson so far is that identity security makes more sense when administration and attack simulation are learned together. I want to know how to build the environment correctly, how common shortcuts break that model, what an attacker sees, and what the defender should be able to detect.</p>
 
