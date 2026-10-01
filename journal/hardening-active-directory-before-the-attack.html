@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<script>(function(){try{var s=localStorage.getItem("ucu-theme");document.documentElement.setAttribute("data-theme",s==="light"?"light":"dark");}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Hardening and validating a Windows Server 2025 Active Directory lab before adversary simulation: delegated administration, Tier-0 restrictions, audit policy, DNS troubleshooting and clean restore points.">
+  <title>Hardening Active Directory Before the Attack | Scott Renny</title>
+  <link rel="stylesheet" href="../assets/vendor/ucu/tokens.css"><link rel="stylesheet" href="../assets/vendor/ucu/base.css"><link rel="stylesheet" href="../assets/vendor/ucu/components.css"><link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/journal-app.css?v=ucu-20260926-0100">
+<link rel="stylesheet" href="../assets/css/public-shell.css"></head>
+<body>
+<a class="site-skip" href="#content">Skip to content</a>
+<div class="ucu-app" data-ucu-app data-public-shell>
+<div class="ucu-sidebar-overlay" data-ucu-nav-close></div>
+<aside class="ucu-sidebar" id="public-navigation" aria-label="Site navigation">
+  <div class="ucu-brand"><a class="ucu-brand-mark" href="../index.html" aria-label="Scott Renny portfolio">S</a><div class="ucu-brand-text"><div class="ucu-brand-name">Scott Renny</div><div class="ucu-brand-subtitle">Personal / Career</div></div><button class="ucu-sidebar-close" type="button" data-ucu-nav-close aria-label="Close navigation">×</button></div>
+  <nav class="ucu-nav" aria-label="Primary"><div class="ucu-nav-section-label">Portfolio console</div><a class="ucu-nav-item" href="../index.html"><span class="ucu-nav-icon" aria-hidden="true">◈</span>Portfolio</a><a class="ucu-nav-item" href="../dashboard/"><span class="ucu-nav-icon" aria-hidden="true">▤</span>Public dashboard</a><a class="ucu-nav-item is-active" href="../journal/" aria-current="page"><span class="ucu-nav-icon" aria-hidden="true">≋</span>Engineering journal</a><a class="ucu-nav-item" href="../certifications/"><span class="ucu-nav-icon" aria-hidden="true">◇</span>Certifications</a><a class="ucu-nav-item" href="../resume/"><span class="ucu-nav-icon" aria-hidden="true">▧</span>Resume</a><div class="ucu-nav-section-label">Explore</div><a class="ucu-nav-item" href="../index.html#projects"><span class="ucu-nav-icon" aria-hidden="true">⌘</span>Featured projects</a><a class="ucu-nav-item" href="../index.html#skills"><span class="ucu-nav-icon" aria-hidden="true">◫</span>Skills</a><a class="ucu-nav-item" href="https://github.com/scott-renny"><span class="ucu-nav-icon" aria-hidden="true">↗</span>GitHub</a></nav>
+  <div class="ucu-sidebar-footer"><button type="button" class="ucu-theme-toggle" data-ucu-theme-toggle aria-pressed="false"><span data-ucu-theme-label>Dark mode</span><span aria-hidden="true">◐</span></button><div class="ucu-system-info"><span>Public portfolio</span><span>GitHub Pages · UCU 0.1</span></div></div>
+</aside>
+<main class="ucu-main" id="top"><div class="ucu-content"><div class="site-context"><button type="button" class="ucu-nav-toggle" data-ucu-nav-open aria-label="Open navigation" aria-controls="public-navigation" aria-expanded="false">☰</button><span>Personal / Career <span aria-hidden="true">/</span> Engineering journal</span><span class="site-environment">● Public portfolio</span></div><div id="content" tabindex="-1" class="article-page"><div class="article-crumbs"><a href="./">← All entries</a><a href="../dashboard/">Project dashboard ↗</a><a href="https://github.com/scott-renny">GitHub ↗</a></div><article class="article">
+  <header><p class="eyebrow">COC · OCTOBER 1, 2026</p><h1 class="ucu-page-title">Hardening Active Directory Before the Attack</h1><p class="dek">Before introducing Kali into Phase 10, I stopped to prove that the Windows identity environment was patched, deliberately administered, observable and recoverable. The validation uncovered two security lessons I would have missed by rushing straight to the attacks.</p></header>
+
+  <p>Phase 10 reached an important boundary today. The Windows Server 2025 domain controller and Windows 11 Enterprise client are built, but I did not want to install the attacker VM until I could answer a more important question: is the identity environment actually in a known-good state?</p>
+
+  <p>That turned today's work into a hardening and validation session rather than an attack session. I tested delegated administration, restricted Tier-0 use, expanded audit coverage, patched both Windows systems, chased down a multihomed DNS problem and finished by creating powered-off restore points.</p>
+
+  <h2>Proving delegated workstation administration</h2>
+  <p>The workstation administration model uses AGDLP rather than assigning privileges directly to individual users. My separate administrative identity is a member of the workstation-admin Global group, which is nested into a Domain Local permission group. Group Policy then places that Domain Local group into the built-in Administrators group on domain workstations.</p>
+
+  <p>I validated the complete chain on WIN11-CLIENT. The administrative identity received local administrator rights through the intended group path, while a normal employee identity remained a standard user. That turned the group design from a diagram into a tested authorization model.</p>
+
+  <h2>A successful domain join exposed a default I did not want</h2>
+  <p>One of the most useful findings happened almost by accident. A normal employee credential was accepted during the Windows client domain join. The join worked, but that was not consistent with the administrative boundary I was trying to build.</p>
+
+  <p>I traced the behavior to <code>ms-DS-MachineAccountQuota</code>, which was still set to 10. Instead of leaving the default in place, I reduced the quota to zero and explicitly delegated workstation computer-object administration to the workstation-admin role on the workstation OU. I verified the resulting ACL rather than assuming the delegation wizard had done what I intended.</p>
+
+  <p>The lesson was bigger than one setting: successful authentication does not automatically mean the authorization model is correct. Defaults still need to be compared against the design.</p>
+
+  <h2>Keeping Tier-0 credentials away from ordinary workstations</h2>
+  <p>I also finished the privileged-logon boundary. A dedicated GPO denies the Tier-0 group local interactive and Remote Desktop logon to ordinary workstations. Testing mattered here too: the Tier-0 identity was rejected at WIN11-CLIENT, while the delegated workstation-admin identity could still sign in successfully.</p>
+
+  <p>The result is a clearer separation between everyday IT work, workstation/server administration and domain-level administration instead of treating every privileged task as a reason to use Domain Admin credentials.</p>
+
+  <h2>Building the telemetry before generating the attack</h2>
+  <p>A dedicated Advanced Audit Policy GPO is now applied to the domain controller and workstation. It records authentication and logon activity, Kerberos authentication and service-ticket operations, account lockouts, account and security-group changes, process creation, policy changes and important system events.</p>
+
+  <p>This is intentionally being done before the offensive exercises. When I later generate password-spray and Kerberos activity, I want to know what telemetry should exist and why, rather than retrofitting logging after discovering that the evidence is missing.</p>
+
+  <h2>Patching exposed a second troubleshooting problem</h2>
+  <p>DC01 was patched before the attack baseline was frozen. The restart stalled for hours and eventually required a forced power-off. After recovery I did not assume Active Directory had survived cleanly: I rechecked the core AD services, SYSVOL and NETLOGON, domain-controller connectivity and DNS.</p>
+
+  <p>That validation exposed a persistent multihomed DNS issue. DC01 was publishing its VirtualBox NAT IPv4 and IPv6 addresses in authoritative AD DNS alongside the isolated lab address, even though normal DNS registration on the NAT interface had already been disabled.</p>
+
+  <h2>Reproducing the DNS problem before fixing it</h2>
+  <p>I forced domain-controller DNS registration and confirmed that the unwanted records returned. That was useful because it separated a stale-record problem from an active registration problem.</p>
+
+  <p>The fix in this lab was to restrict the DNS Server listener to the isolated AD interface at <code>10.10.10.10</code>, restart DNS and deliberately force DC registration again. The unwanted NAT records did not come back. From WIN11-CLIENT, DC01 then resolved only through the lab address and the domain secure channel remained healthy.</p>
+
+  <p>I finished with another domain-controller connectivity check and confirmed the core AD, DNS, Kerberos, Netlogon and AD Web Services services were healthy.</p>
+
+  <h2>Freezing the clean pre-attack baseline</h2>
+  <p>With both Windows systems patched and validated, I shut them down cleanly and created powered-off VirtualBox snapshots named <code>DC01 - Pre-Attack Identity Baseline</code> and <code>WIN11-CLIENT - Pre-Attack Identity Baseline</code>.</p>
+
+  <p>Those snapshots mark the end of the first half of this part of Phase 10. The environment has been built, administered, hardened, instrumented, troubleshot and validated before any intentional attack activity is introduced.</p>
+
+  <h2>What comes next</h2>
+  <p>Kali is next, but the goal is not to collect attack commands. The next chapter is Attack → Detect → Investigate → Remediate. Controlled password-spray, Kerberoasting and credential-access exercises will stay inside the isolated lab and will be connected to Windows and Wazuh evidence, investigation notes, remediation and incident-response records.</p>
+
+  <p>Today's biggest takeaway was that the pre-attack validation was not administrative cleanup. It produced two of the most useful findings in the lab so far: an overly broad machine-join default and a domain controller registering the wrong interfaces in DNS. Finding and fixing those before attacking the environment made the defensive baseline much more meaningful.</p>
+
+  <p><a class="text-link" href="https://github.com/scott-renny/cyber-operations-center-engineering-program/tree/main/phases/phase-10-identity-services">Read the Phase 10 progress record ↗</a></p>
+  <a class="back" href="./">← Back to the engineering journal</a>
+</article>
+</div>
+<footer><p>Built and maintained by Scott Renny.</p><div><a href="./">Journal</a><a href="https://github.com/scott-renny">GitHub ↗</a></div></footer></div></main></div>
+<script src="../assets/vendor/ucu/app-shell.js"></script><script src="../assets/js/public-shell.js"></script></body>
+</html>
