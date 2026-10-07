@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<script>(function(){try{var s=localStorage.getItem("ucu-theme");document.documentElement.setAttribute("data-theme",s==="light"?"light":"dark");}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Bringing requests, library automation and playback together on Atlas—and documenting the boundaries before adding more services.">
+  <title>Building Project Hestia into a Platform I Can Explain | Scott Renny</title>
+  <link rel="stylesheet" href="../assets/vendor/ucu/tokens.css"><link rel="stylesheet" href="../assets/vendor/ucu/base.css"><link rel="stylesheet" href="../assets/vendor/ucu/components.css"><link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/journal-app.css?v=ucu-20260926-0100">
+<link rel="stylesheet" href="../assets/css/public-shell.css"></head>
+<body>
+<a class="site-skip" href="#content">Skip to content</a>
+<div class="ucu-app" data-ucu-app data-public-shell>
+<div class="ucu-sidebar-overlay" data-ucu-nav-close></div>
+<aside class="ucu-sidebar" id="public-navigation" aria-label="Site navigation">
+  <div class="ucu-brand"><a class="ucu-brand-mark" href="../index.html" aria-label="Scott Renny portfolio">S</a><div class="ucu-brand-text"><div class="ucu-brand-name">Scott Renny</div><div class="ucu-brand-subtitle">Personal / Career</div></div><button class="ucu-sidebar-close" type="button" data-ucu-nav-close aria-label="Close navigation">×</button></div>
+  <nav class="ucu-nav" aria-label="Primary"><div class="ucu-nav-section-label">Portfolio console</div><a class="ucu-nav-item" href="../index.html"><span class="ucu-nav-icon" aria-hidden="true">◈</span>Portfolio</a><a class="ucu-nav-item" href="../dashboard/"><span class="ucu-nav-icon" aria-hidden="true">▤</span>Public dashboard</a><a class="ucu-nav-item is-active" href="../journal/" aria-current="page"><span class="ucu-nav-icon" aria-hidden="true">≋</span>Engineering journal</a><a class="ucu-nav-item" href="../certifications/"><span class="ucu-nav-icon" aria-hidden="true">◇</span>Certifications</a><a class="ucu-nav-item" href="../resume/"><span class="ucu-nav-icon" aria-hidden="true">▧</span>Resume</a><div class="ucu-nav-section-label">Explore</div><a class="ucu-nav-item" href="../index.html#projects"><span class="ucu-nav-icon" aria-hidden="true">⌘</span>Featured projects</a><a class="ucu-nav-item" href="../index.html#skills"><span class="ucu-nav-icon" aria-hidden="true">◫</span>Skills</a><a class="ucu-nav-item" href="https://github.com/scott-renny"><span class="ucu-nav-icon" aria-hidden="true">↗</span>GitHub</a></nav>
+  <div class="ucu-sidebar-footer"><button type="button" class="ucu-theme-toggle" data-ucu-theme-toggle aria-pressed="false"><span data-ucu-theme-label>Dark mode</span><span aria-hidden="true">◐</span></button><div class="ucu-system-info"><span>Public portfolio</span><span>GitHub Pages · UCU 0.1</span></div></div>
+</aside>
+<main class="ucu-main" id="top"><div class="ucu-content"><div class="site-context"><button type="button" class="ucu-nav-toggle" data-ucu-nav-open aria-label="Open navigation" aria-controls="public-navigation" aria-expanded="false">☰</button><span>Personal / Career <span aria-hidden="true">/</span> Engineering journal</span><span class="site-environment">● Public portfolio</span></div><div id="content" tabindex="-1" class="article-page"><div class="article-crumbs"><a href="./">← All entries</a><a href="../dashboard/">Project dashboard ↗</a><a href="https://github.com/scott-renny">GitHub ↗</a></div><article class="article"><header><p class="eyebrow">PROJECT HESTIA · OCTOBER 6, 2026</p><h1 class="ucu-page-title">Building Project Hestia into a Platform I Can Explain</h1><p class="dek">Bringing requests, library automation and playback together on Atlas—and documenting the boundaries before adding more services.</p></header>
+<p>Project Hestia is the media-services platform in my home Cyber Operations Center. It runs on Atlas v1 and brings together Jellyfin, Seerr and the services that handle requests, downloads, library management and enrichment.</p>
+<p>The working system came first. The next step was getting the public project to explain that system properly. I wanted someone opening the repository to understand what each service does, how the pieces connect and which parts still depend on configuration outside Git.</p>
+<h2>The useful part is how the services connect</h2>
+<p>Jellyfin handles playback and keeps household users, viewing history and resume state together. Seerr handles discovery and requests. Radarr and Sonarr manage the movie and television libraries, Prowlarr supplies the indexer integration, and qBittorrent handles the transfers.</p>
+<p>That sounds straightforward until the boundaries need to be documented. The library managers search through Prowlarr, but they submit downloads to qBittorrent themselves. The architecture diagram needed to show that accurately. A neat diagram is only useful if it describes what the applications actually do.</p>
+<p>Recyclarr keeps selected custom-format policy in a tracked configuration file. Bazarr and Trailarr add subtitles and trailers. Vanguarr provides the recommendation layer, with Jellyfin remaining the source of truth for viewing history.</p>
+<h2>Filesystem paths are part of the design</h2>
+<p>The download client and library managers share the same data root inside their containers as /data. Jellyfin gets the media and transcode directories through its own mounts. Keeping those paths consistent makes the import workflow easier to understand and avoids unnecessary path translation between services.</p>
+<p>The host configuration root and bulk data root are separate and configurable. That gives me a clearer boundary between application state and the media workspace, and a path toward moving Hestia from Atlas v1 to Atlas v2 later.</p>
+<p>There are still host dependencies. The supplied Compose definition maps /dev/dri into Jellyfin and Trailarr, and Jellyfin uses the host&#x27;s video and render group IDs. Those IDs are examples from Atlas, not values I should expect to work on every Linux machine.</p>
+<h2>Publishing the definition without publishing the household</h2>
+<p>The public repository contains Compose, documentation and sanitized policy. It does not contain the live application databases, API keys, account details, viewing history or media files.</p>
+<p>That distinction also matters for reproducibility. Someone can read and adapt the infrastructure definition, but cloning it does not recreate my configured applications. The API connections, indexers, root folders and accounts still need to be set up in the deployment.</p>
+<p>I also wanted the security documentation to be honest about access. A Docker bridge is not the same as an isolated network, and the current published ports bind to all host interfaces. External access controls belong to the deployment layer and are not installed by this Compose file.</p>
+<h2>Polishing the project without disturbing the working stack</h2>
+<p>For the v1.0 presentation pass, I prepared a complete README, expanded the architecture and deployment guides, clarified the environment example and strengthened the repository validator. I also added a GitHub Actions workflow for Linux validation.</p>
+<p>I kept the Compose changes to comments and formatting. Rendering the old and new definitions produced identical configurations. That was the right boundary for this pass: make the project easier to understand without introducing an unnecessary behavior change into the working platform.</p>
+<p>The repository content checks passed, including tests that deliberately introduced unsafe files and credential examples. The secret scans found no leaks in the prepared tree or repository history. Bash and ShellCheck could not run in the Windows sandbox. After the prepared changes were opened as a GitHub pull request, the Linux workflow passed the repository validation, Bash syntax and ShellCheck checks. Keeping those two results separate gave me a clearer account of what had actually been tested.</p>
+<h2>Knowing what this version includes</h2>
+<p>Vanguarr is part of the platform, but I do not yet have enough genuine viewing history to judge the quality of personalized recommendations. I want that evaluation to come from actual use.</p>
+<p>Backup and restore are outside the scope of Hestia at this point. Most container images also still use mutable tags. Those are boundaries of this version, not features I am going to imply are finished because the repository looks better.</p>
+<p>What I am taking from this work is that documenting an integrated platform forces me to check my assumptions. The service list is the easy part. Explaining the paths, state, API relationships and access boundaries is where the design becomes much clearer.</p>
+<p>The repository changes are now in a pull request, with Linux validation passing. The next posting milestone is merging that work and connecting the public project to this journal. After that, I can build on a clear account of what Hestia actually is today.</p>
+<p><a class="text-link" href="https://github.com/scott-renny/project-hestia">Explore Project Hestia on GitHub ↗</a></p>
+<a class="back" href="./">← Back to the engineering journal</a></article>
+</div>
+<footer><p>Built and maintained by Scott Renny.</p><div><a href="./">Journal</a><a href="https://github.com/scott-renny/project-hestia">Hestia repository ↗</a></div></footer></div></main></div>
+<script src="../assets/vendor/ucu/app-shell.js"></script><script src="../assets/js/public-shell.js"></script></body>
+</html>
