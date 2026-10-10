@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /help/
+
+Sitemap: https://scott-renny.github.io/sitemap.xml
