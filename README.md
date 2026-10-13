@@ -15,6 +15,7 @@ The site highlights evidence-backed projects, engineering journal entries, curre
   - `assets/css/journal-app.css` — Journal-specific list/article styling, also built on UCU tokens
 - `dashboard/` — curated public project-status view
 - `journal/` — engineering journal entries
+- `projects/` — evidence-backed project case studies
 - `certifications/`, `resume/` — supporting pages
 
 ## Design system
@@ -28,13 +29,17 @@ repository, so this site stays independently deployable and free to host on
 GitHub Pages.
 
 Per UCU's own guidance for public-facing sites, the Portfolio and Journal
-reuse UCU's tokens, typography, cards, buttons, badges and status
-indicators, but intentionally do **not** use the UCU application shell
-(sidebar/console navigation) — this is a public site with a conventional
-header/nav/footer, not an internal dashboard.
+reuse UCU tokens, typography, cards, buttons, badges and status indicators
+with the responsive public portfolio sidebar, theme toggle and accessible
+navigation. This is a static public site; private dashboard operational data
+and controls are excluded.
 
 ## Maintenance
 
 Project status and technology claims should match the corresponding repository documentation. Links should point to published repositories or pages; unfinished downloads are described explicitly rather than exposed as placeholders.
 
 The public dashboard is a sanitized portfolio snapshot. Private project names, detailed execution queues, personal logistics and internal operational data remain in the private control dashboard.
+
+## Latest project addition
+
+[COC USB #1 Technician Toolkit](https://github.com/scott-renny/coc-usb-technician-toolkit) adds a Windows support-automation case study and engineering journal entry. Source, complete offline playbook, installed-menu screenshot and generated architecture are public; vendor binaries, ISOs and personal reports are excluded. Physical and representative acceptance remain explicit.
