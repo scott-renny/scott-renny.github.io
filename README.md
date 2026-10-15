@@ -42,4 +42,4 @@ The public dashboard is a sanitized portfolio snapshot. Private project names, d
 
 ## Latest project addition
 
-[COC USB #1 Technician Toolkit](https://github.com/scott-renny/coc-usb-technician-toolkit) adds a Windows support-automation case study and engineering journal entry. Source, complete offline playbook, installed-menu screenshot and generated architecture are public; vendor binaries, ISOs and personal reports are excluded. Physical and representative acceptance remain explicit.
+[COC USB #2 — DFIR and Incident Response](https://scott-renny.github.io/projects/coc-usb2-dfir-toolkit.html) adds guided investigations, Python/PowerShell acquired-evidence workflows, case logs, verified handoff and controlled generated-log retention. Source edition and a build journal are published alongside the existing USB #1 project. Latest installation is read-back verified; 128 local tests passed. Real-evidence, GUI/live-query/lab acceptance remains scoped.
