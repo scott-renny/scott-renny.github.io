@@ -1,8 +1,21 @@
-# Scott Renny — Engineering Journal & Portfolio
+<div align="center">
+
+# Engineering Journal & Portfolio
+### Cybersecurity · Infrastructure · Automation
+
+![edition: public portfolio](https://img.shields.io/badge/edition-public%20portfolio-22d3ee?style=flat-square)
+![hosting: GitHub Pages](https://img.shields.io/badge/hosting-GitHub%20Pages-2563eb?style=flat-square)
+
+[Visit portfolio](https://scott-renny.github.io) · [Journal](https://scott-renny.github.io/journal/) · [License](LICENSE)
+
+</div>
+
+[Structure](#structure) · [Design system](#design-system) · [Maintenance](#maintenance) · [Latest project addition](#latest-project-addition)
+
+---
 
 Source for [scott-renny.github.io](https://scott-renny.github.io), my cybersecurity engineering journal and project portfolio.
 
-![Portfolio](https://img.shields.io/badge/type-portfolio-blue) ![Cybersecurity](https://img.shields.io/badge/focus-cybersecurity-2EA44F) ![Infrastructure](https://img.shields.io/badge/focus-infrastructure-orange) ![Automation](https://img.shields.io/badge/focus-automation-purple)
 
 The site highlights evidence-backed projects, engineering journal entries, current learning, and links to the corresponding GitHub repositories.
 
