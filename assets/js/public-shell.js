@@ -1,37 +1,37 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var header = document.querySelector('.darkstar-header');
-  if (!header) return;
-  var button = header.querySelector('.darkstar-menu');
-  var nav = header.querySelector('.darkstar-navigation');
-  var mobile = window.matchMedia('(max-width: 760px)');
-  function close(returnFocus) {
-    button.setAttribute('aria-expanded', 'false');
-    nav.classList.remove('is-open');
-    if (returnFocus) button.focus();
+  UCU.shell.init();
+  var app = document.querySelector('[data-ucu-app]');
+  var sidebar = document.querySelector('.ucu-sidebar');
+  var opener = document.querySelector('[data-ucu-nav-open]');
+  var mobile = window.matchMedia('(max-width: 1024px)');
+  function syncNavigation() {
+    var opened = app.classList.contains('is-nav-open');
+    opener.setAttribute('aria-expanded', String(opened));
+    sidebar.inert = mobile.matches && !opened;
   }
-  button.addEventListener('click', function () {
-    var open = button.getAttribute('aria-expanded') !== 'true';
-    button.setAttribute('aria-expanded', String(open));
-    nav.classList.toggle('is-open', open);
+  new MutationObserver(syncNavigation).observe(app, {attributes:true, attributeFilter:['class']});
+  mobile.addEventListener('change', syncNavigation);
+  syncNavigation();
+  opener.addEventListener('click', function () {
+    syncNavigation();
+    sidebar.querySelector('[data-ucu-nav-close]').focus();
   });
-  header.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') close(true);
+  document.querySelectorAll('[data-ucu-nav-close]').forEach(function (button) {
+    button.addEventListener('click', function () { opener.focus(); });
   });
-  nav.querySelectorAll('a').forEach(function (link) {
-    link.addEventListener('click', function () { close(false); });
+  sidebar.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      app.classList.remove('is-nav-open');
+      document.body.style.overflow = '';
+    });
   });
-  mobile.addEventListener('change', function () { close(nav.contains(document.activeElement)); });
-  var theme = header.querySelector('[data-darkstar-theme]');
-  function syncTheme() {
-    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-    theme.textContent = dark ? 'Light mode' : 'Dark mode';
-    theme.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-  }
-  theme.addEventListener('click', function () {
-    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    try { localStorage.setItem('ucu-theme', next); } catch (error) { /* Theme still applies. */ }
-    syncTheme();
+  document.addEventListener('keydown', function (event) {
+    if (!mobile.matches) return;
+    if (event.key === 'Escape' && sidebar.contains(document.activeElement)) opener.focus();
+    if (event.key !== 'Tab' || !app.classList.contains('is-nav-open')) return;
+    var items = Array.from(sidebar.querySelectorAll('a,button'));
+    var first = items[0], last = items[items.length-1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   });
-  syncTheme();
 });

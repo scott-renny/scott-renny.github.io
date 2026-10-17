@@ -1,11 +1,11 @@
-# DARKSTAR public design layer
+# DARKSTAR public design
 
-The public portfolio and journal use the approved copper orbital identity, neutral light/dark themes and an editorial header. The portfolio defaults to dark; reading/supporting pages default to light. A saved theme choice applies across pages using the existing `ucu-theme` storage key.
+The approved portfolio uses a mountain-led dark layout; the journal uses a forest masthead and light reading layout. The homepage, journal index and 17 articles use self-contained HTML/CSS and inline shared interaction code. Supporting public pages retain the earlier public design adapter. Vendored UCU files, dashboard/help tools and GitHub profile are unchanged.
 
-`assets/css/darkstar.css` is a public-site adapter over unchanged UCU vendor files. The vendor snapshot and its hashes remain intact. No private dashboard or telemetry integration is changed. Shared navigation is repeated in static HTML so it works without a content injection/build service. On mobile, Menu expands the navigation; Escape closes it and returns focus. Without JavaScript, the navigation is made available through a noscript style.
+Portfolio visuals are recorded screenshots, explicitly labelled synthetic demos/source previews, or source-grounded Mermaid diagrams. Planned Cerberus/Ares architecture is labelled planned. Journal covers are AI-generated editorial illustrations, reused across related topics; they are not equipment photographs or operational evidence. Raster assets are shared files in assets/images and assets/darkstar. Brand vectors remain in assets/brand.
 
-Brand vectors are in `assets/brand`. Fonts use installed Space Grotesk/Inter when available, with Segoe UI and system fallbacks. No new font download, widget, framework or publishing service is required. The orbital illustration is static and nonessential; reduced-motion preferences disable existing smooth scrolling and transitions.
+The core pages use separate local theme preferences for portfolio and journal, responsive keyboard-operable navigation, and journal search/category filters. Mermaid imports version 11.4.1 from jsDelivr with strict security and readable source fallback if unavailable. Diagram rendering needs internet access. No build service or telemetry integration is added.
 
-The article bodies, URLs, metadata, project records, search/filter selectors, vendored components and publishing model are retained. Status figures are not live telemetry. Rollback is a revert of this presentation commit; there is no data migration.
+All 17 original article bodies are preserved. Public URLs and existing repository publishing configuration are retained. Automated review passed 131 image/content assertions and runtime/module syntax checks; user approved full local pages. Live deployment and desktop/mobile interaction checks remain separate validation steps.
 
-Validation before merge: open the portfolio and journal at desktop and mobile sizes, search/filter the journal, follow an article and its return link, operate navigation and theme by keyboard, verify theme persistence, inspect both themes and print output. No private source or operational settings belong in the public deployment.
+Rollback: revert the website PR merge commit. No data migration or runtime infrastructure change is involved.
