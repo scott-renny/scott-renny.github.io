@@ -33,6 +33,9 @@ The site highlights evidence-backed projects, engineering journal entries, curre
 
 ## Design system
 
+The public site now adds the approved **DARKSTAR** copper/neutral identity and editorial navigation through a local adapter. See [DARKSTAR design layer](docs/DARKSTAR.md) for theme behavior, accessibility, validation and rollback. The UCU vendor snapshot is retained unchanged.
+
+
 This site and the Cybersecurity Journal are visually built on the **Unified
 Console UI (UCU)** — the same shared design tokens and components used
 across the Cyber Operations Center dashboard family (Projects, Learning, AI
@@ -43,7 +46,7 @@ GitHub Pages.
 
 Per UCU's own guidance for public-facing sites, the Portfolio and Journal
 reuse UCU tokens, typography, cards, buttons, badges and status indicators
-with the responsive public portfolio sidebar, theme toggle and accessible
+with the responsive DARKSTAR public header, theme toggle and accessible
 navigation. This is a static public site; private dashboard operational data
 and controls are excluded.
 

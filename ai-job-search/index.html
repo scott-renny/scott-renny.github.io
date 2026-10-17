@@ -1,23 +1,1361 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-default-theme="dark" data-page="portfolio">
 <head><meta charset="utf-8">
-<script>(function(){try{var s=localStorage.getItem("ucu-theme");document.documentElement.setAttribute("data-theme",s==="light"?"light":"dark");}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
-<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI Job Search Automation Platform: a production-style AI automation project by Scott Renny with deterministic safety gates, grounded document generation, reviewer critique, and human authority at consequential actions."><title>AI Job Search Automation Platform | Scott Renny</title><link rel="canonical" href="https://scott-renny.github.io/ai-job-search/"><link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg"><meta property="og:type" content="website"><meta property="og:site_name" content="Scott Renny"><meta property="og:title" content="AI Job Search Automation Platform | Scott Renny"><meta property="og:description" content="AI Job Search Automation Platform: a production-style AI automation project by Scott Renny with deterministic safety gates, grounded document generation, reviewer critique, and human authority at consequential actions."><meta property="og:url" content="https://scott-renny.github.io/ai-job-search/"><meta property="og:image" content="https://scott-renny.github.io/assets/img/og-card.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AI Job Search Automation Platform | Scott Renny"><meta name="twitter:description" content="AI Job Search Automation Platform: a production-style AI automation project by Scott Renny with deterministic safety gates, grounded document generation, reviewer critique, and human authority at consequential actions."><meta name="twitter:image" content="https://scott-renny.github.io/assets/img/og-card.png"><link rel="stylesheet" href="../assets/vendor/ucu/tokens.css"><link rel="stylesheet" href="../assets/vendor/ucu/base.css"><link rel="stylesheet" href="../assets/vendor/ucu/components.css"><link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/public-shell.css"></head>
+<script>(function(){try{var t=localStorage.getItem("ucu-theme");document.documentElement.setAttribute("data-theme",t==="light"||t==="dark"?t:document.documentElement.getAttribute("data-default-theme"));}catch(e){document.documentElement.setAttribute("data-theme",document.documentElement.getAttribute("data-default-theme"));}})();</script>
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI Job Search Automation Platform: a production-style AI automation project by Scott Renny with deterministic safety gates, grounded document generation, reviewer critique, and human authority at consequential actions."><title>AI Job Search Automation Platform | Scott Renny</title><link rel="canonical" href="https://scott-renny.github.io/ai-job-search/"><link rel="icon" type="image/svg+xml" href="../assets/darkstar/84f8e0abfbd47f35756c.svg"><meta property="og:type" content="website"><meta property="og:site_name" content="Scott Renny"><meta property="og:title" content="AI Job Search Automation Platform | Scott Renny"><meta property="og:description" content="AI Job Search Automation Platform: a production-style AI automation project by Scott Renny with deterministic safety gates, grounded document generation, reviewer critique, and human authority at consequential actions."><meta property="og:url" content="https://scott-renny.github.io/ai-job-search/"><meta property="og:image" content="https://scott-renny.github.io/assets/img/og-card.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AI Job Search Automation Platform | Scott Renny"><meta name="twitter:description" content="AI Job Search Automation Platform: a production-style AI automation project by Scott Renny with deterministic safety gates, grounded document generation, reviewer critique, and human authority at consequential actions."><meta name="twitter:image" content="https://scott-renny.github.io/assets/img/og-card.png"><style>/* ==========================================================================
+   UCU Design Tokens — Unified Console UI v0.1.0
+   --------------------------------------------------------------------------
+   Dark is the default theme (applies with no attribute, or data-theme="dark").
+   Light is opt-in: <html data-theme="light">. See docs/THEMING.md.
+   All tokens are namespaced --ucu-*. Components must consume tokens only —
+   never hardcode a color, spacing, or radius value outside this file.
+   ========================================================================== */
+
+:root {
+  /* ---- Layout ---- */
+  --ucu-sidebar-width: 220px;
+  --ucu-content-padding: 32px;
+  --ucu-content-max-width: 1400px;
+  --ucu-control-height: 36px;
+  --ucu-control-height-sm: 30px;
+
+  /* ---- Typography ---- */
+  --ucu-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --ucu-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  --ucu-fs-xs: 0.75rem;   /* 12px */
+  --ucu-fs-sm: 0.8125rem; /* 13px */
+  --ucu-fs-base: 0.875rem;/* 14px */
+  --ucu-fs-md: 1rem;      /* 16px */
+  --ucu-fs-lg: 1.125rem;  /* 18px */
+  --ucu-fs-xl: 1.375rem;  /* 22px */
+  --ucu-fs-2xl: 1.75rem;  /* 28px */
+  --ucu-fs-3xl: 2.25rem;  /* 36px */
+
+  --ucu-fw-normal: 400;
+  --ucu-fw-medium: 500;
+  --ucu-fw-semibold: 600;
+  --ucu-fw-bold: 700;
+
+  --ucu-lh-tight: 1.2;
+  --ucu-lh-normal: 1.5;
+  --ucu-lh-relaxed: 1.7;
+
+  /* ---- Spacing scale ---- */
+  --ucu-space-1: 4px;
+  --ucu-space-2: 8px;
+  --ucu-space-3: 12px;
+  --ucu-space-4: 16px;
+  --ucu-space-5: 20px;
+  --ucu-space-6: 24px;
+  --ucu-space-7: 32px;
+  --ucu-space-8: 40px;
+  --ucu-space-9: 48px;
+  --ucu-space-10: 64px;
+
+  /* ---- Radii ---- */
+  --ucu-radius-sm: 6px;
+  --ucu-radius-md: 10px;
+  --ucu-radius-lg: 14px;
+  --ucu-radius-full: 999px;
+
+  /* ---- Shadows (used sparingly — menus/overlays, not cards) ---- */
+  --ucu-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --ucu-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.36);
+
+  /* ---- Motion ---- */
+  --ucu-transition-fast: 120ms ease;
+  --ucu-transition-base: 200ms ease;
+
+  /* ---- Breakpoints (reference only — CSS vars aren't usable in @media) ---- */
+  /* tablet/mobile collapse: 1024px · small mobile: 640px — see docs/RESPONSIVE.md */
+}
+
+/* ==========================================================================
+   Dark theme (default)
+   ========================================================================== */
+:root,
+:root[data-theme="dark"] {
+  --ucu-bg: #0a0e17;
+  --ucu-sidebar-bg: #070a11;
+  --ucu-surface: #111827;
+  --ucu-surface-alt: #161f38;
+  --ucu-surface-hover: #1a2540;
+
+  --ucu-border: #22304a;
+  --ucu-border-strong: #2e3f5c;
+
+  --ucu-accent: #22d3ee;
+  --ucu-accent-hover: #67e8f9;
+  --ucu-accent-active: #06b6d4;
+  --ucu-accent-contrast: #04141c;
+  --ucu-accent-soft: rgba(34, 211, 238, 0.12);
+
+  --ucu-text: #eef2f8;
+  --ucu-text-muted: #8b9bbd;
+  --ucu-text-faint: #57678a;
+
+  --ucu-success: #34d399;
+  --ucu-success-soft: rgba(52, 211, 153, 0.14);
+  --ucu-warning: #fbbf24;
+  --ucu-warning-soft: rgba(251, 191, 36, 0.14);
+  --ucu-danger: #f87171;
+  --ucu-danger-soft: rgba(248, 113, 113, 0.14);
+  --ucu-info: #60a5fa;
+  --ucu-info-soft: rgba(96, 165, 250, 0.14);
+
+  --ucu-viz-1: #22d3ee;
+  --ucu-viz-2: #818cf8;
+  --ucu-viz-3: #34d399;
+  --ucu-viz-4: #fbbf24;
+  --ucu-viz-5: #f472b6;
+  --ucu-viz-6: #60a5fa;
+
+  --ucu-scrollbar-thumb: #2e3f5c;
+  --ucu-scrollbar-track: transparent;
+  --ucu-overlay: rgba(3, 6, 12, 0.6);
+
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   Light theme (opt-in via data-theme="light")
+   ========================================================================== */
+:root[data-theme="light"] {
+  --ucu-bg: #f5f7fb;
+  --ucu-sidebar-bg: #e6eaf3;
+  --ucu-surface: #ffffff;
+  --ucu-surface-alt: #eef1f8;
+  --ucu-surface-hover: #e9edf6;
+
+  --ucu-border: #d9e0ec;
+  --ucu-border-strong: #c3ccdd;
+
+  --ucu-accent: #0891b2;
+  --ucu-accent-hover: #0e7490;
+  --ucu-accent-active: #0e7490;
+  --ucu-accent-contrast: #ffffff;
+  --ucu-accent-soft: rgba(8, 145, 178, 0.1);
+
+  --ucu-text: #101828;
+  --ucu-text-muted: #4b5872;
+  --ucu-text-faint: #8592aa;
+
+  --ucu-success: #059669;
+  --ucu-success-soft: rgba(5, 150, 105, 0.1);
+  --ucu-warning: #b45309;
+  --ucu-warning-soft: rgba(180, 83, 9, 0.1);
+  --ucu-danger: #dc2626;
+  --ucu-danger-soft: rgba(220, 38, 38, 0.1);
+  --ucu-info: #2563eb;
+  --ucu-info-soft: rgba(37, 99, 235, 0.1);
+
+  --ucu-viz-1: #0891b2;
+  --ucu-viz-2: #6366f1;
+  --ucu-viz-3: #059669;
+  --ucu-viz-4: #b45309;
+  --ucu-viz-5: #db2777;
+  --ucu-viz-6: #2563eb;
+
+  --ucu-scrollbar-thumb: #c3ccdd;
+  --ucu-scrollbar-track: transparent;
+  --ucu-overlay: rgba(16, 24, 40, 0.4);
+
+  color-scheme: light;
+}
+</style><style>/* ==========================================================================
+   UCU Base — reset & typography defaults
+   Requires tokens.css to be loaded first.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ucu-bg);
+  color: var(--ucu-text);
+  font-family: var(--ucu-font-sans);
+  font-size: var(--ucu-fs-base);
+  line-height: var(--ucu-lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: var(--ucu-fw-semibold);
+  line-height: var(--ucu-lh-tight);
+  color: var(--ucu-text);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--ucu-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--ucu-accent-hover);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+code, pre {
+  font-family: var(--ucu-font-mono);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--ucu-border);
+  margin: var(--ucu-space-5) 0;
+}
+
+::selection {
+  background: var(--ucu-accent-soft);
+  color: var(--ucu-text);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--ucu-accent);
+  outline-offset: 2px;
+}
+
+/* Scrollbars — WebKit + Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ucu-scrollbar-thumb) var(--ucu-scrollbar-track);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ucu-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ucu-scrollbar-thumb);
+  border-radius: var(--ucu-radius-full);
+}
+
+/* Utility: screen-reader only content */
+.ucu-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+</style><style>/* ==========================================================================
+   UCU Components — Unified Console UI v0.1.0
+   Requires tokens.css and base.css to be loaded first.
+   See docs/COMPONENTS.md for usage and markup examples.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Application shell
+   -------------------------------------------------------------------------- */
+.ucu-app {
+  display: flex;
+  min-height: 100vh;
+  background: var(--ucu-bg);
+}
+
+.ucu-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.ucu-content {
+  padding: var(--ucu-content-padding);
+  max-width: var(--ucu-content-max-width);
+  margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   2. Sidebar, brand block, navigation
+   -------------------------------------------------------------------------- */
+.ucu-sidebar {
+  width: var(--ucu-sidebar-width);
+  flex-shrink: 0;
+  background: var(--ucu-sidebar-bg);
+  border-right: 1px solid var(--ucu-border);
+  display: flex;
+  flex-direction: column;
+  padding: var(--ucu-space-6) 0 var(--ucu-space-5);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.ucu-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--ucu-space-3);
+  padding: 0 var(--ucu-space-5) var(--ucu-space-6);
+  margin-bottom: var(--ucu-space-3);
+  border-bottom: 1px solid var(--ucu-border);
+}
+
+.ucu-brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--ucu-radius-md);
+  background: var(--ucu-accent-soft);
+  color: var(--ucu-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--ucu-fw-bold);
+  font-size: var(--ucu-fs-md);
+  flex-shrink: 0;
+}
+
+.ucu-brand-mark img,
+.ucu-brand-mark svg {
+  width: 18px;
+  height: 18px;
+}
+
+.ucu-brand-text {
+  min-width: 0;
+}
+
+.ucu-brand-name {
+  font-size: var(--ucu-fs-sm);
+  font-weight: var(--ucu-fw-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ucu-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ucu-brand-subtitle {
+  font-size: var(--ucu-fs-xs);
+  color: var(--ucu-text-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ucu-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 var(--ucu-space-3);
+  flex: 1;
+}
+
+.ucu-nav-section-label {
+  font-size: var(--ucu-fs-xs);
+  font-weight: var(--ucu-fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ucu-text-faint);
+  padding: var(--ucu-space-4) var(--ucu-space-3) var(--ucu-space-1);
+}
+
+.ucu-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ucu-space-3);
+  padding: var(--ucu-space-2) var(--ucu-space-3);
+  border-radius: var(--ucu-radius-md);
+  color: var(--ucu-text-muted);
+  font-size: var(--ucu-fs-sm);
+  font-weight: var(--ucu-fw-medium);
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  transition: background var(--ucu-transition-fast), color var(--ucu-transition-fast);
+}
+
+.ucu-nav-item:hover {
+  background: var(--ucu-surface-hover);
+  color: var(--ucu-text);
+}
+
+.ucu-nav-item.is-active {
+  background: var(--ucu-accent);
+  color: var(--ucu-accent-contrast);
+}
+
+.ucu-nav-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ucu-nav-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ucu-sidebar-footer {
+  padding: var(--ucu-space-4) var(--ucu-space-5) 0;
+  margin-top: var(--ucu-space-4);
+  border-top: 1px solid var(--ucu-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ucu-space-3);
+}
+
+.ucu-system-info {
+  font-size: var(--ucu-fs-xs);
+  color: var(--ucu-text-faint);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Mobile nav toggle + overlay (see section 12, Responsive) */
+.ucu-nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--ucu-radius-sm);
+  border: 1px solid var(--ucu-border);
+  background: var(--ucu-surface-alt);
+  color: var(--ucu-text);
+  cursor: pointer;
+  margin-bottom: var(--ucu-space-4);
+}
+
+.ucu-nav-toggle:hover {
+  border-color: var(--ucu-border-strong);
+}
+
+.ucu-nav-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.ucu-sidebar-overlay {
+  display: none;
+}
+
+.ucu-sidebar-close {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. Page header
+   -------------------------------------------------------------------------- */
+.ucu-page-header {
+  margin-bottom: var(--ucu-space-7);
+}
+
+.ucu-page-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ucu-space-4);
+  flex-wrap: wrap;
+}
+
+.ucu-page-title {
+  font-size: var(--ucu-fs-2xl);
+}
+
+.ucu-page-subtitle {
+  margin-top: var(--ucu-space-2);
+  font-size: var(--ucu-fs-sm);
+  color: var(--ucu-text-muted);
+}
+
+.ucu-page-actions {
+  display: flex;
+  gap: var(--ucu-space-2);
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   4. Grid helpers
+   -------------------------------------------------------------------------- */
+.ucu-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--ucu-space-4);
+}
+
+.ucu-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--ucu-space-4);
+}
+
+.ucu-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ucu-space-4);
+}
+
+.ucu-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ucu-space-4);
+}
+
+/* --------------------------------------------------------------------------
+   5. Cards
+   -------------------------------------------------------------------------- */
+.ucu-card {
+  background: var(--ucu-surface);
+  border: 1px solid var(--ucu-border);
+  border-radius: var(--ucu-radius-md);
+  padding: var(--ucu-space-5);
+}
+
+.ucu-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ucu-space-3);
+  margin-bottom: var(--ucu-space-4);
+}
+
+.ucu-card-title {
+  font-size: var(--ucu-fs-md);
+  font-weight: var(--ucu-fw-semibold);
+}
+
+.ucu-card-subtitle {
+  font-size: var(--ucu-fs-xs);
+  color: var(--ucu-text-muted);
+  margin-top: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   6. KPI / metric cards
+   -------------------------------------------------------------------------- */
+.ucu-kpi-card {
+  background: var(--ucu-surface);
+  border: 1px solid var(--ucu-border);
+  border-radius: var(--ucu-radius-md);
+  padding: var(--ucu-space-5);
+}
+
+.ucu-kpi-label {
+  font-size: var(--ucu-fs-xs);
+  font-weight: var(--ucu-fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ucu-text-muted);
+}
+
+.ucu-kpi-value {
+  font-size: var(--ucu-fs-3xl);
+  font-weight: var(--ucu-fw-bold);
+  margin-top: var(--ucu-space-2);
+  color: var(--ucu-text);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--ucu-lh-tight);
+}
+
+.ucu-kpi-meta {
+  margin-top: var(--ucu-space-2);
+  font-size: var(--ucu-fs-xs);
+  color: var(--ucu-text-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--ucu-space-1);
+}
+
+.ucu-kpi-meta.is-positive { color: var(--ucu-success); }
+.ucu-kpi-meta.is-negative { color: var(--ucu-danger); }
+
+/* --------------------------------------------------------------------------
+   7. Tables
+   -------------------------------------------------------------------------- */
+.ucu-table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ucu-space-3);
+  margin-bottom: var(--ucu-space-3);
+  flex-wrap: wrap;
+}
+
+.ucu-table-toolbar-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--ucu-space-2);
+  flex-wrap: wrap;
+}
+
+.ucu-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--ucu-border);
+  border-radius: var(--ucu-radius-md);
+  background: var(--ucu-surface);
+}
+
+.ucu-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--ucu-fs-sm);
+}
+
+.ucu-table th {
+  text-align: left;
+  padding: var(--ucu-space-3) var(--ucu-space-4);
+  font-size: var(--ucu-fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ucu-text-muted);
+  font-weight: var(--ucu-fw-semibold);
+  border-bottom: 1px solid var(--ucu-border);
+  white-space: nowrap;
+}
+
+.ucu-table td {
+  padding: var(--ucu-space-3) var(--ucu-space-4);
+  border-bottom: 1px solid var(--ucu-border);
+  color: var(--ucu-text);
+  vertical-align: middle;
+}
+
+.ucu-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ucu-table tbody tr:hover {
+  background: var(--ucu-surface-hover);
+}
+
+.ucu-table .ucu-table-muted {
+  color: var(--ucu-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   8. Buttons
+   -------------------------------------------------------------------------- */
+.ucu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ucu-space-2);
+  height: var(--ucu-control-height);
+  padding: 0 var(--ucu-space-4);
+  border-radius: var(--ucu-radius-sm);
+  border: 1px solid var(--ucu-border);
+  background: var(--ucu-surface-alt);
+  color: var(--ucu-text);
+  font-size: var(--ucu-fs-sm);
+  font-weight: var(--ucu-fw-medium);
+  cursor: pointer;
+  transition: background var(--ucu-transition-fast), border-color var(--ucu-transition-fast), color var(--ucu-transition-fast);
+}
+
+.ucu-btn:hover {
+  background: var(--ucu-surface-hover);
+  border-color: var(--ucu-border-strong);
+}
+
+.ucu-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ucu-btn-primary {
+  background: var(--ucu-accent);
+  border-color: var(--ucu-accent);
+  color: var(--ucu-accent-contrast);
+}
+
+.ucu-btn-primary:hover {
+  background: var(--ucu-accent-hover);
+  border-color: var(--ucu-accent-hover);
+}
+
+.ucu-btn-danger {
+  background: transparent;
+  border-color: var(--ucu-danger);
+  color: var(--ucu-danger);
+}
+
+.ucu-btn-danger:hover {
+  background: var(--ucu-danger-soft);
+}
+
+.ucu-btn-ghost {
+  background: transparent;
+  border-color: transparent;
+}
+
+.ucu-btn-ghost:hover {
+  background: var(--ucu-surface-hover);
+}
+
+.ucu-btn-sm {
+  height: var(--ucu-control-height-sm);
+  padding: 0 var(--ucu-space-3);
+  font-size: var(--ucu-fs-xs);
+}
+
+.ucu-btn-icon {
+  width: var(--ucu-control-height);
+  padding: 0;
+}
+
+.ucu-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   9. Forms — fields, inputs, selects, search, checkbox, toggle, textarea
+   -------------------------------------------------------------------------- */
+.ucu-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ucu-space-2);
+}
+
+.ucu-label {
+  font-size: var(--ucu-fs-xs);
+  font-weight: var(--ucu-fw-medium);
+  color: var(--ucu-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.ucu-input,
+.ucu-select,
+.ucu-textarea {
+  height: var(--ucu-control-height);
+  padding: 0 var(--ucu-space-3);
+  border-radius: var(--ucu-radius-sm);
+  border: 1px solid var(--ucu-border);
+  background: var(--ucu-surface-alt);
+  color: var(--ucu-text);
+  font-size: var(--ucu-fs-sm);
+  width: 100%;
+  transition: border-color var(--ucu-transition-fast), box-shadow var(--ucu-transition-fast);
+}
+
+.ucu-textarea {
+  height: auto;
+  padding: var(--ucu-space-3);
+  resize: vertical;
+  min-height: 88px;
+}
+
+.ucu-input::placeholder,
+.ucu-textarea::placeholder {
+  color: var(--ucu-text-faint);
+}
+
+.ucu-input:focus,
+.ucu-select:focus,
+.ucu-textarea:focus {
+  border-color: var(--ucu-accent);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ucu-accent-soft);
+}
+
+.ucu-input.is-error,
+.ucu-select.is-error,
+.ucu-textarea.is-error {
+  border-color: var(--ucu-danger);
+}
+
+.ucu-field-error {
+  font-size: var(--ucu-fs-xs);
+  color: var(--ucu-danger);
+}
+
+.ucu-field-hint {
+  font-size: var(--ucu-fs-xs);
+  color: var(--ucu-text-faint);
+}
+
+.ucu-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%238b93a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--ucu-space-3) center;
+  padding-right: var(--ucu-space-8);
+}
+
+.ucu-search {
+  position: relative;
+}
+
+.ucu-search .ucu-input {
+  padding-left: var(--ucu-space-8);
+}
+
+.ucu-search-icon {
+  position: absolute;
+  left: var(--ucu-space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ucu-text-faint);
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.ucu-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ucu-space-2);
+  font-size: var(--ucu-fs-sm);
+  color: var(--ucu-text);
+  cursor: pointer;
+}
+
+.ucu-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--ucu-accent);
+  cursor: pointer;
+}
+
+.ucu-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 40px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.ucu-toggle input {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  position: absolute;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.ucu-toggle-track {
+  position: absolute;
+  inset: 0;
+  background: var(--ucu-surface-alt);
+  border: 1px solid var(--ucu-border);
+  border-radius: var(--ucu-radius-full);
+  transition: background var(--ucu-transition-fast), border-color var(--ucu-transition-fast);
+}
+
+.ucu-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ucu-text-muted);
+  transition: transform var(--ucu-transition-fast), background var(--ucu-transition-fast);
+}
+
+.ucu-toggle input:checked ~ .ucu-toggle-track {
+  background: var(--ucu-accent-soft);
+  border-color: var(--ucu-accent);
+}
+
+.ucu-toggle input:checked ~ .ucu-toggle-thumb {
+  transform: translateX(18px);
+  background: var(--ucu-accent);
+}
+
+.ucu-toggle-field {
+  display: flex;
+  align-items: center;
+  gap: var(--ucu-space-3);
+  font-size: var(--ucu-fs-sm);
+  color: var(--ucu-text);
+}
+
+/* --------------------------------------------------------------------------
+   10. Badges & status
+   -------------------------------------------------------------------------- */
+.ucu-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ucu-space-1);
+  padding: 2px var(--ucu-space-2);
+  border-radius: var(--ucu-radius-full);
+  font-size: var(--ucu-fs-xs);
+  font-weight: var(--ucu-fw-medium);
+  background: var(--ucu-surface-alt);
+  color: var(--ucu-text-muted);
+  border: 1px solid var(--ucu-border);
+  white-space: nowrap;
+}
+
+.ucu-badge-success { background: var(--ucu-success-soft); color: var(--ucu-success); border-color: transparent; }
+.ucu-badge-warning { background: var(--ucu-warning-soft); color: var(--ucu-warning); border-color: transparent; }
+.ucu-badge-danger  { background: var(--ucu-danger-soft);  color: var(--ucu-danger);  border-color: transparent; }
+.ucu-badge-info    { background: var(--ucu-info-soft);    color: var(--ucu-info);    border-color: transparent; }
+
+.ucu-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  background: var(--ucu-text-faint);
+  flex-shrink: 0;
+}
+
+.ucu-status-dot-success { background: var(--ucu-success); }
+.ucu-status-dot-warning { background: var(--ucu-warning); }
+.ucu-status-dot-danger  { background: var(--ucu-danger); }
+.ucu-status-dot-info    { background: var(--ucu-info); }
+
+.ucu-status-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ucu-space-2);
+  font-size: var(--ucu-fs-sm);
+  color: var(--ucu-text);
+}
+
+/* --------------------------------------------------------------------------
+   11. Progress bars
+   -------------------------------------------------------------------------- */
+.ucu-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--ucu-fs-xs);
+  color: var(--ucu-text-muted);
+  margin-bottom: var(--ucu-space-2);
+}
+
+.ucu-progress {
+  height: 8px;
+  border-radius: var(--ucu-radius-full);
+  background: var(--ucu-surface-alt);
+  border: 1px solid var(--ucu-border);
+  overflow: hidden;
+}
+
+.ucu-progress-bar {
+  height: 100%;
+  border-radius: var(--ucu-radius-full);
+  background: var(--ucu-accent);
+  transition: width var(--ucu-transition-base);
+}
+
+.ucu-progress-bar.is-success { background: var(--ucu-success); }
+.ucu-progress-bar.is-warning { background: var(--ucu-warning); }
+.ucu-progress-bar.is-danger  { background: var(--ucu-danger); }
+
+/* --------------------------------------------------------------------------
+   12. Alerts
+   -------------------------------------------------------------------------- */
+.ucu-alert {
+  display: flex;
+  gap: var(--ucu-space-3);
+  align-items: flex-start;
+  padding: var(--ucu-space-4);
+  border-radius: var(--ucu-radius-md);
+  border: 1px solid var(--ucu-border);
+  background: var(--ucu-surface-alt);
+  font-size: var(--ucu-fs-sm);
+}
+
+.ucu-alert-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  color: var(--ucu-text-muted);
+}
+
+.ucu-alert-title {
+  font-weight: var(--ucu-fw-semibold);
+  margin-bottom: 2px;
+  color: var(--ucu-text);
+}
+
+.ucu-alert-body {
+  color: var(--ucu-text-muted);
+}
+
+.ucu-alert-success { background: var(--ucu-success-soft); border-color: transparent; }
+.ucu-alert-success .ucu-alert-icon { color: var(--ucu-success); }
+
+.ucu-alert-warning { background: var(--ucu-warning-soft); border-color: transparent; }
+.ucu-alert-warning .ucu-alert-icon { color: var(--ucu-warning); }
+
+.ucu-alert-danger { background: var(--ucu-danger-soft); border-color: transparent; }
+.ucu-alert-danger .ucu-alert-icon { color: var(--ucu-danger); }
+
+.ucu-alert-info { background: var(--ucu-info-soft); border-color: transparent; }
+.ucu-alert-info .ucu-alert-icon { color: var(--ucu-info); }
+
+/* --------------------------------------------------------------------------
+   13. Chart containers
+   -------------------------------------------------------------------------- */
+.ucu-chart-card {
+  background: var(--ucu-surface);
+  border: 1px solid var(--ucu-border);
+  border-radius: var(--ucu-radius-md);
+  padding: var(--ucu-space-5);
+}
+
+.ucu-chart-placeholder {
+  height: 220px;
+  border-radius: var(--ucu-radius-sm);
+  background: var(--ucu-surface-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ucu-text-faint);
+  font-size: var(--ucu-fs-sm);
+  border: 1px dashed var(--ucu-border-strong);
+  text-align: center;
+  padding: var(--ucu-space-4);
+}
+
+.ucu-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ucu-space-4);
+  margin-top: var(--ucu-space-4);
+}
+
+.ucu-chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ucu-space-2);
+  font-size: var(--ucu-fs-xs);
+  color: var(--ucu-text-muted);
+}
+
+.ucu-chart-legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   14. Theme toggle
+   -------------------------------------------------------------------------- */
+.ucu-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ucu-space-2);
+  padding: var(--ucu-space-2) var(--ucu-space-3);
+  border-radius: var(--ucu-radius-sm);
+  border: 1px solid var(--ucu-border);
+  background: var(--ucu-surface-alt);
+  color: var(--ucu-text-muted);
+  font-size: var(--ucu-fs-xs);
+  cursor: pointer;
+  width: 100%;
+}
+
+.ucu-theme-toggle:hover {
+  color: var(--ucu-text);
+  border-color: var(--ucu-border-strong);
+}
+
+.ucu-theme-toggle svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   15. Responsive behavior
+   docs/RESPONSIVE.md documents these breakpoints and rationale.
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .ucu-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    transition: transform var(--ucu-transition-base);
+    z-index: 50;
+    box-shadow: var(--ucu-shadow-md);
+  }
+
+  .ucu-app.is-nav-open .ucu-sidebar {
+    transform: translateX(0);
+  }
+
+  .ucu-app.is-nav-open .ucu-sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: var(--ucu-overlay);
+    z-index: 40;
+  }
+
+  .ucu-nav-toggle {
+    display: inline-flex;
+  }
+
+  .ucu-sidebar-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--ucu-radius-sm);
+    border: 1px solid var(--ucu-border);
+    background: transparent;
+    color: var(--ucu-text-muted);
+    cursor: pointer;
+    margin-left: auto;
+  }
+
+  .ucu-sidebar-close svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .ucu-content {
+    padding: var(--ucu-space-5);
+  }
+
+  .ucu-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ucu-grid-2,
+  .ucu-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 1025px) {
+  .ucu-sidebar-overlay {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .ucu-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ucu-content {
+    padding: var(--ucu-space-4);
+  }
+
+  .ucu-page-title {
+    font-size: var(--ucu-fs-xl);
+  }
+
+  .ucu-table-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ucu-table-toolbar-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+</style><style>html{scroll-behavior:smooth;scroll-padding-top:24px}
+:root{--site-max:1120px}
+
+.site-header{max-width:var(--site-max);margin:0 auto;padding:0 var(--ucu-space-6);min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:var(--ucu-space-4);border-bottom:1px solid var(--ucu-border);flex-wrap:wrap}
+.brand{color:var(--ucu-text);font-weight:var(--ucu-fw-bold);text-decoration:none;letter-spacing:-.01em;font-size:var(--ucu-fs-md)}
+.site-header nav{display:flex;gap:var(--ucu-space-5);align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.site-header nav a{color:var(--ucu-text-muted);text-decoration:none;font-size:var(--ucu-fs-sm)}
+.site-header nav a:hover,.site-header nav a:focus-visible{color:var(--ucu-accent)}
+.site-header nav a[aria-current="page"]{color:var(--ucu-text)}
+.site-header .ucu-theme-toggle{width:auto;padding:var(--ucu-space-1) var(--ucu-space-3);height:var(--ucu-control-height-sm)}
+
+main{max-width:var(--site-max);margin:0 auto;padding:0 var(--ucu-space-6)}
+
+.hero{padding:var(--ucu-space-9) 0 var(--ucu-space-9);max-width:870px}
+.eyebrow{color:var(--ucu-accent);font-size:var(--ucu-fs-xs);font-weight:var(--ucu-fw-bold);letter-spacing:.16em;text-transform:uppercase;margin:0 0 var(--ucu-space-4)}
+.hero h1{font-size:clamp(2.5rem,5.2vw,4.5rem);line-height:1.05;letter-spacing:-.03em;margin:0 0 var(--ucu-space-6);max-width:920px;color:var(--ucu-text)}
+.lead{font-size:var(--ucu-fs-lg);color:var(--ucu-text-muted);max-width:720px;margin:0;line-height:var(--ucu-lh-relaxed)}
+.actions{display:flex;gap:var(--ucu-space-3);margin-top:var(--ucu-space-7);flex-wrap:wrap}
+
+.section{padding:var(--ucu-space-9) 0;border-top:1px solid var(--ucu-border)}
+.section h2{font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.02em;line-height:1.1;margin:0 0 var(--ucu-space-6);color:var(--ucu-text)}
+.section p{color:var(--ucu-text-muted)}
+.section-intro{max-width:700px;margin:var(--ucu-space-3) 0 var(--ucu-space-7)}
+.section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--ucu-space-6);flex-wrap:wrap}
+.section-heading h2{margin-bottom:0}
+.section-heading .eyebrow{margin-bottom:var(--ucu-space-4)}
+.count{color:var(--ucu-text-faint);font-size:var(--ucu-fs-sm)}
+.split{display:grid;grid-template-columns:1fr 1.25fr;gap:var(--ucu-space-9)}
+.split>div:last-child>p:first-child{margin-top:0}
+.split p+p{margin-top:var(--ucu-space-4)}
+
+.ucu-badge,.ucu-status-inline{align-self:flex-start}
+
+.text-link{color:var(--ucu-accent);text-decoration:none;font-weight:var(--ucu-fw-semibold);white-space:nowrap}
+.text-link:hover,.text-link:focus-visible{text-decoration:underline}
+.card-link{color:var(--ucu-accent);text-decoration:none;font-weight:var(--ucu-fw-semibold);font-size:var(--ucu-fs-sm)}
+.card-link:hover,.card-link:focus-visible{text-decoration:underline}
+.back{display:inline-block;margin-top:var(--ucu-space-6);color:var(--ucu-accent);text-decoration:none;font-weight:var(--ucu-fw-semibold)}
+.back:hover{text-decoration:underline}
+
+.project-grid{margin-top:var(--ucu-space-8)}
+.ucu-card.project-card{display:flex;flex-direction:column;min-height:270px}
+.project-card--featured{grid-column:span 2}
+.project-card .card-top{display:flex;justify-content:space-between;gap:var(--ucu-space-4);align-items:flex-start}
+.project-card h3{font-size:var(--ucu-fs-lg);letter-spacing:-.01em;margin:var(--ucu-space-3) 0}
+.project-card .project-kind{font-size:var(--ucu-fs-xs);color:var(--ucu-text-faint)}
+.project-card p{color:var(--ucu-text-muted);font-size:var(--ucu-fs-sm)}
+.project-card .tags{font-size:var(--ucu-fs-xs);color:var(--ucu-text-faint);margin:var(--ucu-space-4) 0 0}
+.project-card .card-link{margin-top:auto;padding-top:var(--ucu-space-5)}
+.project-note{font-size:var(--ucu-fs-sm);color:var(--ucu-text-muted);max-width:760px;margin:var(--ucu-space-5) 0 0}
+
+.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--ucu-space-4)}
+.skill-group{background:var(--ucu-surface);border:1px solid var(--ucu-border);border-top:2px solid var(--ucu-accent);border-radius:0 0 var(--ucu-radius-md) var(--ucu-radius-md);padding:var(--ucu-space-5)}
+.skill-group h3{font-size:var(--ucu-fs-md);margin:0 0 var(--ucu-space-4);color:var(--ucu-text)}
+.skill-group li{color:var(--ucu-text-muted);font-size:var(--ucu-fs-sm);padding:var(--ucu-space-2) 0;border-bottom:1px solid var(--ucu-border)}
+.skill-group li:last-child{border-bottom:0}
+
+.ucu-card.cert-card{min-height:225px;position:relative;display:flex;flex-direction:column}
+.cert-card h3{font-size:var(--ucu-fs-lg);margin:var(--ucu-space-3) 0 var(--ucu-space-2)}
+.cert-card p{color:var(--ucu-text-muted);font-size:var(--ucu-fs-sm)}
+.cert-card .tags{font-size:var(--ucu-fs-xs);color:var(--ucu-text-faint);margin-top:var(--ucu-space-3)}
+.cert-card .cert-date{margin-top:auto;padding-top:var(--ucu-space-4);color:var(--ucu-text-faint);font-size:var(--ucu-fs-xs)}
+
+.journal-preview-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--ucu-space-4);margin-top:var(--ucu-space-8)}
+.ucu-card.journal-preview-card{display:flex;flex-direction:column;min-height:225px}
+.journal-preview-card .journal-meta{font-size:var(--ucu-fs-xs);color:var(--ucu-accent);font-weight:var(--ucu-fw-bold);letter-spacing:.08em;text-transform:uppercase}
+.journal-preview-card h3{font-size:var(--ucu-fs-lg);margin:var(--ucu-space-3) 0;letter-spacing:-.01em}
+.journal-preview-card p{color:var(--ucu-text-muted);font-size:var(--ucu-fs-sm);margin:0 0 var(--ucu-space-5)}
+.journal-preview-card .card-link{margin-top:auto}
+
+footer{max-width:var(--site-max);margin:0 auto;padding:var(--ucu-space-7) var(--ucu-space-6) var(--ucu-space-9);border-top:1px solid var(--ucu-border);display:flex;justify-content:space-between;gap:var(--ucu-space-6);color:var(--ucu-text-muted);font-size:var(--ucu-fs-sm);flex-wrap:wrap}
+footer p{margin:0}
+footer div{display:flex;gap:var(--ucu-space-5);flex-wrap:wrap}
+footer a{color:var(--ucu-text-muted);text-decoration:none}
+footer a:hover,footer a:focus-visible{color:var(--ucu-accent)}
+
+@media(max-width:1024px){
+  .skills-grid{grid-template-columns:repeat(2,1fr)}
+  .split{grid-template-columns:1fr;gap:var(--ucu-space-6)}
+  .project-card--featured{grid-column:span 1}
+  .journal-preview-grid{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .site-header,main,footer{padding-left:var(--ucu-space-4);padding-right:var(--ucu-space-4)}
+  .site-header{min-height:64px}
+  .hero{padding:var(--ucu-space-7) 0}
+  .section{padding:var(--ucu-space-7) 0}
+  .skills-grid{grid-template-columns:1fr}
+  .section-heading{align-items:flex-start;flex-direction:column;gap:var(--ucu-space-3)}
+  footer{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style><style>/* Public portfolio layout built on the unchanged UCU 0.1 components. */
+.ucu-main{max-width:none;margin:0;padding:0}
+.site-context{display:flex;align-items:center;gap:var(--ucu-space-4);margin-bottom:var(--ucu-space-7);font-size:var(--ucu-fs-xs);color:var(--ucu-text-faint);text-transform:uppercase}
+.site-context .ucu-nav-toggle{margin:0;flex-shrink:0}
+.site-environment{margin-left:auto;color:var(--ucu-success);text-transform:none}
+.site-skip{position:fixed;top:var(--ucu-space-3);left:var(--ucu-space-3);z-index:100;transform:translateY(-200%);background:var(--ucu-surface);padding:var(--ucu-space-3);border:1px solid var(--ucu-accent);border-radius:var(--ucu-radius-sm)}
+.site-skip:focus{transform:translateY(0)}
+.ucu-sidebar-close{font-size:var(--ucu-fs-xl)}
+.hero,.dashboard-hero,.resume-intro{padding:0 0 var(--ucu-space-7);max-width:none}
+.hero h1,.dashboard-hero h1,.resume-intro h1,.article h1{font-size:var(--ucu-fs-2xl);line-height:var(--ucu-lh-tight);letter-spacing:normal;margin:0 0 var(--ucu-space-4)}
+.lead,.article .dek{font-size:var(--ucu-fs-md);max-width:80ch}
+.eyebrow{margin-bottom:var(--ucu-space-3)}
+.section,.dashboard-section,.resume-section{padding:var(--ucu-space-7) 0}
+.section h2,.dashboard-section h2,.resume-section>h2,.resume-section .section-heading h2{font-size:var(--ucu-fs-xl);line-height:var(--ucu-lh-tight);letter-spacing:normal}
+.project-grid,.journal-preview-grid{margin-top:var(--ucu-space-5)}
+.skills-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.resume-shell{max-width:none}
+.article{max-width:80ch;padding:var(--ucu-space-6) 0 var(--ucu-space-7);margin:0}
+.article pre{overflow:auto}
+.article ol{list-style:decimal}
+.ucu-content footer{max-width:none;padding:var(--ucu-space-5) 0;margin:var(--ucu-space-7) 0 0;font-size:var(--ucu-fs-xs)}
+[hidden]{display:none!important}
+.ucu-content{overflow-wrap:anywhere}
+@media(max-width:640px){.site-context{gap:var(--ucu-space-3);flex-wrap:wrap}.site-environment{margin-left:0}.skills-grid{grid-template-columns:1fr}.ucu-content footer{padding-left:0;padding-right:0}.ucu-badge{white-space:normal}}
+@media print{.ucu-sidebar,.ucu-sidebar-overlay,.site-context,.site-skip{display:none!important}.ucu-app{display:block;background:white}.ucu-main,.ucu-content{padding:0;margin:0;max-width:none}.ucu-content footer{display:none}.resume-intro h1{font-size:28pt}}
+</style><style>/* DARKSTAR public editorial layer. Vendored UCU files remain unchanged. */
+:root{--ucu-font-sans:Inter,"Segoe UI",system-ui,sans-serif;--darkstar-heading:"Space Grotesk","Segoe UI",system-ui,sans-serif;--ucu-fs-base:1rem;--ucu-fs-xs:.75rem;--ucu-fs-sm:.875rem;--ucu-radius-sm:4px;--ucu-radius-md:8px;--ucu-radius-lg:12px;--ucu-control-height:44px;--ucu-lh-normal:1.6}
+:root,:root[data-theme="dark"]{--ucu-bg:#0d0f12;--ucu-sidebar-bg:#0d0f12;--ucu-surface:#1e1f24;--ucu-surface-alt:#25282e;--ucu-surface-hover:#2e3238;--ucu-text:#f4f2ed;--ucu-text-muted:#d6d1c6;--ucu-text-faint:#d6d1c6;--ucu-border:#484b50;--ucu-border-strong:#85837e;--ucu-accent:#d99a63;--ucu-accent-hover:#e8b68b;--ucu-accent-active:#e8b68b;--ucu-accent-contrast:#0d0f12;--ucu-accent-soft:rgba(217,154,99,.12);--ucu-success:#a2bc96;--ucu-warning:#e7bd69;--ucu-danger:#f09c8e;--ucu-info:#9cc6e7;color-scheme:dark}
+:root[data-theme="light"]{--ucu-bg:#f4f2ed;--ucu-sidebar-bg:#f4f2ed;--ucu-surface:#fff;--ucu-surface-alt:#e8e4db;--ucu-surface-hover:#e8e4db;--ucu-text:#1e1f24;--ucu-text-muted:#5a5f66;--ucu-text-faint:#5a5f66;--ucu-border:#d6d1c6;--ucu-border-strong:#76746f;--ucu-accent:#8a4b20;--ucu-accent-hover:#713b18;--ucu-accent-active:#713b18;--ucu-accent-contrast:#fff;--ucu-accent-soft:rgba(138,75,32,.09);--ucu-success:#3f6039;--ucu-warning:#815100;--ucu-danger:#a33224;--ucu-info:#326184;color-scheme:light}
+html{scroll-padding-top:24px}body{height:auto;min-height:100%;font-size:1rem}.ucu-app{display:block;min-height:100%;background:var(--ucu-bg)}.ucu-main{margin:0;max-width:none;padding:0}.ucu-content{max-width:1180px;padding:0 36px;margin:auto;width:100%;overflow-wrap:break-word}h1,h2,h3{font-family:var(--darkstar-heading)}
+.darkstar-header{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1180px;padding:22px 36px;margin:auto;border-bottom:1px solid var(--ucu-border)}.darkstar-brand{display:flex;align-items:center;gap:12px;color:var(--ucu-text);font-family:var(--darkstar-heading);font-size:1rem;letter-spacing:.25em}.darkstar-brand img{flex-shrink:0}.darkstar-navigation{display:flex;align-items:center;gap:22px;flex-wrap:wrap}.darkstar-navigation a{font-size:.875rem;color:var(--ucu-text-muted);padding:8px 0}.darkstar-navigation a[aria-current="page"]{color:var(--ucu-accent)}.darkstar-navigation a:hover{text-decoration:underline}.darkstar-header button{border:1px solid var(--ucu-border-strong);border-radius:4px;background:transparent;padding:9px 12px;font-size:.8125rem;min-height:44px;cursor:pointer}.darkstar-menu{display:none}
+.hero{padding:64px 0 48px}.hero h1{font-size:clamp(2.35rem,5vw,3.8rem);letter-spacing:-.04em;line-height:1.1;max-width:850px;margin-bottom:24px}.eyebrow{letter-spacing:.12em;font-weight:500}.lead{font-size:1rem;line-height:1.7;max-width:68ch}.darkstar-hero{display:grid;grid-template-columns:1.5fr 1fr;gap:35px;align-items:center}.darkstar-orbital-art{position:relative;height:300px;min-width:0}.orbital-outer,.orbital-inner{position:absolute;left:50%;top:44%;border-radius:50%;transform:translate(-50%,-50%) rotate(-20deg);border-left:2px solid var(--ucu-text);border-top:2px solid var(--ucu-text)}.orbital-outer{width:230px;height:230px}.orbital-inner{width:178px;height:178px;border-color:var(--ucu-accent);border-width:1px;top:46%;left:53%}.orbital-body{position:absolute;width:13px;height:13px;border-radius:50%;background:var(--ucu-accent);left:calc(53% - 78px);top:calc(46% + 41px)}.orbital-caption{position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:.6875rem;letter-spacing:.16em;color:var(--ucu-text-muted)}
+.section{padding:38px 0}.section h2{font-size:clamp(1.65rem,3vw,2.25rem);letter-spacing:-.025em}.section-heading{margin-bottom:24px}.section-heading h2{margin-bottom:0}.project-grid{gap:28px}.ucu-card.project-card,.ucu-card.journal-preview-card{background:transparent;border:0;border-top:1px solid var(--ucu-border);border-radius:0;box-shadow:none;padding:22px 0;min-height:0}.project-card--featured{grid-column:auto}.project-card h3{font-size:1.35rem}.project-card .card-top{flex-wrap:wrap;gap:8px}.project-card p{line-height:1.65}.ucu-badge{white-space:normal}.skills-grid{gap:28px}.skill-group{background:transparent;border:0;border-top:1px solid var(--ucu-border);border-radius:0;padding:22px 0}.split{gap:32px}.text-link{white-space:normal}
+.journal-stats{display:none}.journal-preview-grid{gap:0;grid-template-columns:1fr;margin-top:24px}.journal-preview-card h2,.journal-preview-card h3{font-size:1.5rem}.journal-preview-card p{max-width:72ch}.journal-toolbar{padding:0 0 22px;border-bottom:1px solid var(--ucu-border)}.journal-filters{gap:8px}.article{max-width:70ch;margin:0 auto;padding:36px 0 60px}.article h1{font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.12;letter-spacing:-.035em}.article .dek{font-size:1.125rem}.article h2{border-left:0;padding-left:0;margin-top:40px}.article p,.article li{color:var(--ucu-text);line-height:1.8}.article-crumbs{font-size:.875rem}.article img{height:auto}.ucu-btn{min-height:44px}.ucu-input,.ucu-select,.ucu-search input{font-size:1rem;min-height:44px;border-color:var(--ucu-border-strong)}.ucu-content footer{padding:24px 0;margin-top:30px}.darkstar-header a:focus-visible,.darkstar-header button:focus-visible{outline:2px solid var(--ucu-accent);outline-offset:4px}
+@media(max-width:760px){.darkstar-header{padding:18px 22px;flex-wrap:wrap;gap:12px}.darkstar-menu{display:block}.darkstar-navigation{display:none;width:100%;align-items:stretch;gap:3px}.darkstar-navigation.is-open{display:flex;flex-direction:column}.darkstar-navigation a{padding:10px 0}.darkstar-navigation button{align-self:start}.ucu-content{padding:0 22px}.hero{padding:38px 0}.darkstar-hero{grid-template-columns:1fr}.darkstar-orbital-art{display:none}.project-grid,.skills-grid,.split{grid-template-columns:1fr}.hero h1{font-size:2.5rem}.ucu-grid-2,.ucu-grid-3{grid-template-columns:1fr}.journal-toolbar .ucu-search{min-width:0;width:100%}.article-crumbs{gap:12px}.article h1{font-size:2.2rem}.ucu-card.cert-card{min-height:0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+@media print{.darkstar-header{display:none}.ucu-content{max-width:none;padding:0}.hero{padding:0}.darkstar-orbital-art{display:none}}
+</style><noscript><style>.darkstar-navigation{display:flex!important;flex-wrap:wrap}.darkstar-menu,[data-darkstar-theme]{display:none!important}</style></noscript><style>
+/* Landscape treatment follows the approved reference. */
+.darkstar-hero{position:relative;display:block;padding:64px 38px;min-height:480px;margin:28px -12px 0;border-radius:4px;background-color:#0d0f12;background-image:linear-gradient(90deg,rgba(13,15,18,.94),rgba(13,15,18,.62) 43%,rgba(13,15,18,.12)),var(--darkstar-landscape);background-size:cover;background-position:center;color:#f4f2ed;overflow:hidden}
+.darkstar-hero-copy{max-width:55%;position:relative}.darkstar-hero h1{font-size:clamp(2.2rem,4vw,3.2rem);color:#f4f2ed;max-width:12ch}.darkstar-hero .eyebrow{font-size:.6875rem;letter-spacing:.12em;color:#e8b68b}.darkstar-hero .lead{color:#f4f2ed;font-size:.9375rem}.darkstar-hero .actions{gap:8px}.darkstar-hero .ucu-btn:not(.ucu-btn-primary){background:#0d0f12;color:#f4f2ed;border-color:#85837e}.darkstar-orbital-art{display:none}.darkstar-journal-landscape{width:100%;height:200px;object-fit:cover;object-position:50% 45%;margin-top:30px;border-radius:4px}.journal-page .hero{padding-top:28px;padding-bottom:30px}.review-note{max-width:1108px;margin:12px auto;padding:0 22px;font:12px/1.5 system-ui,sans-serif;color:var(--ucu-text-muted)}
+@media(max-width:760px){.darkstar-hero{margin:18px 0 0;padding:30px 22px;min-height:440px;background-position:60% center;background-image:linear-gradient(90deg,rgba(13,15,18,.9),rgba(13,15,18,.55)),var(--darkstar-landscape)}.darkstar-hero-copy{max-width:100%}.darkstar-hero h1{font-size:2.4rem}.darkstar-journal-landscape{height:145px}}
+</style><style>
+/* Context-matched imagery replaces decorative scene thumbnails and monograms. */
+.entry-visual,.project-thumbnail,.journal-thumbnail,.recent-visual,.article-visual{margin:0;min-width:0;overflow:hidden;background:var(--raised);border-radius:4px}.entry-visual{border-bottom:1px solid var(--line);border-radius:4px 4px 0 0}.entry-visual img{display:block;width:100%;height:235px;object-fit:cover}.entry-visual.screenshot img,.entry-visual.demo img,.entry-visual.source-rendered img{object-fit:contain;background:#10151b}.entry-visual figcaption,.project-thumbnail figcaption,.article-visual figcaption{font-size:10px;color:var(--muted);padding:7px 12px;background:var(--panel);line-height:1.5}.project-row{grid-template-columns:145px 1.2fr 1.4fr 1fr 20px;align-items:center}.project-thumbnail{width:145px;align-self:start}.project-thumbnail img{width:145px;height:100px;object-fit:cover}.project-thumbnail.screenshot img,.project-thumbnail.source-rendered img{object-fit:contain;background:#10151b}.project-thumbnail figcaption{padding:5px 7px;font-size:9px}.journal-row{grid-template-columns:160px 1fr 20px}.journal-thumbnail{width:160px;height:112px;position:relative}.journal-thumbnail img{width:100%;height:100%;object-fit:cover}.journal-thumbnail.screenshot img,.journal-thumbnail.demo img,.journal-thumbnail.source-rendered img{object-fit:contain;background:#10151b}.journal-image-type{font-size:9px;color:var(--muted);margin-top:9px;display:block}.recent-visual{width:100%;margin-bottom:15px}.recent-visual img{width:100%;height:150px;object-fit:cover}.recent-visual.screenshot img,.recent-visual.source-rendered img{object-fit:contain;background:#10151b}.article-visual{margin:0 0 35px;border:1px solid var(--line)}.article-visual img{width:100%;height:auto;max-height:440px;object-fit:contain}.article-visual figcaption{font-size:11px}.article-visual.illustration img{aspect-ratio:16/9;object-fit:cover}.journal-row h2{margin-top:8px}
+@media(max-width:820px){.project-row{grid-template-columns:115px 1fr 1fr;gap:16px}.project-thumbnail{width:115px;grid-row:span 2}.project-thumbnail img{width:115px;height:90px}.project-row .status{grid-column:2/-1}.project-row>span:last-child{display:none}.journal-row{grid-template-columns:125px 1fr 20px}.journal-thumbnail{width:125px;height:100px}}
+@media(max-width:560px){.entry-visual img{height:205px}.project-row{grid-template-columns:95px 1fr;gap:12px}.project-thumbnail{width:95px;grid-row:span 3}.project-thumbnail img{width:95px;height:92px}.project-thumbnail figcaption{font-size:9px}.project-row h3,.project-row>p,.project-row .status{grid-column:2}.project-row>p{font-size:11px}.journal-row{grid-template-columns:90px 1fr;gap:14px}.journal-thumbnail{width:90px;height:96px}.journal-image-type{font-size:9px}.recent-visual img{height:185px}.article-visual img{max-height:300px}}
+
+.project-register{display:grid;grid-template-columns:1fr 1fr;gap:24px;border-top:0}.project-row{display:flex;flex-direction:column;align-items:stretch;gap:12px;border:1px solid var(--line);border-radius:5px;overflow:hidden;background:var(--panel);padding:0 0 20px}.project-row>h3,.project-row>p,.project-row>.status{padding:0 20px}.project-row>span:last-child{display:none}.project-thumbnail{width:100%;grid-row:auto;border-radius:0;border-bottom:1px solid var(--line)}.project-thumbnail img{width:100%;height:185px}.project-thumbnail figcaption{font-size:11px;padding:8px 12px}.entry-visual figcaption,.journal-image-type{font-size:11px}.mermaid-visual{padding-top:16px;background:var(--panel)}.mermaid-visual pre{white-space:pre-wrap;font:11px/1.5 Consolas,monospace;color:var(--muted);margin:0;padding:8px 16px;overflow:auto;min-height:165px}.mermaid-visual svg{display:block;max-width:100%;height:auto;margin:0 auto;min-height:165px;max-height:270px}.mermaid-visual figcaption{font-size:11px;color:var(--muted);padding:10px 14px;border-top:1px solid var(--line);margin-top:12px}.mermaid-visual[data-processed=true] pre{padding:0}.diagram-note{font-size:11px;color:var(--muted);margin:18px 0 0}@media(max-width:560px){.project-register{grid-template-columns:1fr}.project-thumbnail img{height:190px}.journal-image-type{font-size:10px}}
+</style></head>
 <body><a class="site-skip" href="#content">Skip to content</a>
 <div class="ucu-app" data-ucu-app data-public-shell>
-<div class="ucu-sidebar-overlay" data-ucu-nav-close></div>
-<aside class="ucu-sidebar" id="public-navigation" aria-label="Site navigation">
-  <div class="ucu-brand"><a class="ucu-brand-mark" href="../index.html" aria-label="Scott Renny portfolio">S</a><div class="ucu-brand-text"><div class="ucu-brand-name">Scott Renny</div><div class="ucu-brand-subtitle">Personal / Career</div></div><button class="ucu-sidebar-close" type="button" data-ucu-nav-close aria-label="Close navigation">×</button></div>
-  <nav class="ucu-nav" aria-label="Primary"><div class="ucu-nav-section-label">Portfolio console</div><a class="ucu-nav-item" href="../index.html"><span class="ucu-nav-icon" aria-hidden="true">◈</span>Portfolio</a><a class="ucu-nav-item" href="../dashboard/"><span class="ucu-nav-icon" aria-hidden="true">▤</span>Public dashboard</a><a class="ucu-nav-item" href="../journal/"><span class="ucu-nav-icon" aria-hidden="true">≋</span>Engineering journal</a><a class="ucu-nav-item" href="../certifications/"><span class="ucu-nav-icon" aria-hidden="true">◇</span>Certifications</a><a class="ucu-nav-item" href="../resume/"><span class="ucu-nav-icon" aria-hidden="true">▧</span>Resume</a><div class="ucu-nav-section-label">Explore</div><a class="ucu-nav-item" href="../index.html#projects"><span class="ucu-nav-icon" aria-hidden="true">⌘</span>Featured projects</a><a class="ucu-nav-item" href="../index.html#skills"><span class="ucu-nav-icon" aria-hidden="true">◫</span>Skills</a><a class="ucu-nav-item" href="https://github.com/scott-renny"><span class="ucu-nav-icon" aria-hidden="true">↗</span>GitHub</a></nav>
-  <div class="ucu-sidebar-footer"><button type="button" class="ucu-theme-toggle" data-ucu-theme-toggle aria-pressed="false"><span data-ucu-theme-label>Dark mode</span><span aria-hidden="true">◐</span></button><div class="ucu-system-info"><span>Public portfolio</span><span>GitHub Pages · UCU 0.1</span></div></div>
-</aside>
-<main class="ucu-main" id="top"><div class="ucu-content"><div class="site-context"><button type="button" class="ucu-nav-toggle" data-ucu-nav-open aria-label="Open navigation" aria-controls="public-navigation" aria-expanded="false">☰</button><span>Personal / Career <span aria-hidden="true">/</span> AI Job Search Automation Platform</span><span class="site-environment">● Public portfolio</span></div><div id="content" tabindex="-1">
+<header class="darkstar-header"><a class="darkstar-brand" href="../index.html" aria-label="DARKSTAR — Scott Renny portfolio"><img src="../assets/darkstar/84f8e0abfbd47f35756c.svg" width="38" height="38" alt=""><span>DARKSTAR</span></a><button class="darkstar-menu" type="button" aria-controls="darkstar-navigation" aria-expanded="false">Menu</button><nav id="darkstar-navigation" class="darkstar-navigation" aria-label="Primary"><a href="../index.html#projects" aria-current="page">Projects</a><a href="../journal/index.html">Journal</a><a href="../certifications/index.html">Credentials</a><a href="../resume/index.html">Resume</a><a href="../dashboard/index.html">Project status</a><button type="button" data-darkstar-theme aria-label="Switch colour theme">Theme</button></nav></header>
+<main class="ucu-main" id="top"><div class="ucu-content"><div id="content" tabindex="-1"><figure class="article-visual demo"><img src="../assets/images/ai-job.png" alt="AI Job Search dashboard using its labelled synthetic demonstration dataset" loading="lazy" decoding="async"><figcaption>Synthetic demo screenshot · not live application data</figcaption></figure>
 
 <section class="hero"><p class="eyebrow">PRODUCTION-STYLE AI AUTOMATION</p><h1 class="ucu-page-title">AI Job Search Automation Platform</h1><p class="lead">A production-style AI automation platform that discovers job postings, filters them through deterministic eligibility rules, ranks fit with an LLM, and drafts tailored application documents from my own verified background — then, only once a chain of safety gates clears, submits automatically. The moment anything is uncertain, it hands control back to me instead of guessing.</p><p class="tags"><strong>Operational private platform · public portfolio showcase published.</strong></p><div class="actions"><a class="ucu-btn ucu-btn-primary" href="https://github.com/scott-renny/ai-job-search-automation-platform">View the public showcase ↗</a><a class="ucu-btn" href="../journal/building-the-ai-job-search-automation-platform.html">Read the journal entry →</a></div></section>
 
 <section class="section">
   <div class="ucu-card">
-    <img src="assets/dashboard-overview-fold.png" alt="AI Job Search Automation Platform operations dashboard, shown with synthetic demo data" loading="lazy">
+    <img src="https://scott-renny.github.io/ai-job-search/assets/dashboard-overview-fold.png" alt="AI Job Search Automation Platform operations dashboard, shown with synthetic demo data" loading="lazy">
   </div>
   <p class="section-intro">⚠ Shown with fully synthetic demo data — every company, role, date, and figure is fabricated. No real employer or application information appears anywhere in the public showcase.</p>
 </section>
@@ -28,7 +1366,7 @@
   <p class="eyebrow">ARCHITECTURE</p><h2>Eleven stages, one human-authority checkpoint.</h2>
   <p class="section-intro">Postings flow through discovery, deduplication, deterministic eligibility gates, AI-assisted ranking, grounded document generation, reviewer critique, document assembly and validation, and submission safety gates — then either isolated browser automation or human review, followed by application tracking and reporting. Checkpointed state, AI-provider fallback, a credential-security boundary, and systemd service execution underpin the whole pipeline.</p>
   <div class="ucu-card">
-    <img src="assets/architecture-visual.svg" alt="System architecture diagram showing the platform's pipeline stages, from job sources through discovery, deduplication, deterministic eligibility gates, AI-assisted ranking, grounded document generation, reviewer critique, document assembly and validation, submission safety gates, browser automation or human review, application tracking, and dashboard/analytics/reporting, with a supporting-systems band below" loading="lazy">
+    <img src="../assets/darkstar/7ed46f2a598e5fd2ad34.svg" alt="System architecture diagram showing the platform's pipeline stages, from job sources through discovery, deduplication, deterministic eligibility gates, AI-assisted ranking, grounded document generation, reviewer critique, document assembly and validation, submission safety gates, browser automation or human review, application tracking, and dashboard/analytics/reporting, with a supporting-systems band below" loading="lazy">
   </div>
   <p class="section-intro"><a class="text-link" href="https://github.com/scott-renny/ai-job-search-automation-platform/blob/master/docs/architecture.md">Full architecture write-up on GitHub <span aria-hidden="true">↗</span></a></p>
 </section>
@@ -57,7 +1395,44 @@
   <div class="actions"><a class="ucu-btn ucu-btn-primary" href="https://github.com/scott-renny/ai-job-search-automation-platform">View the public showcase ↗</a><a class="ucu-btn" href="../journal/building-the-ai-job-search-automation-platform.html">Read the journal entry →</a><a class="ucu-btn" href="../index.html#projects">Back to featured work →</a></div>
 </section>
 
-</div><footer><p>© 2026 Scott Renny · Cybersecurity engineering portfolio</p><div><a href="../">Home</a><a href="../journal/">Journal</a><a href="https://github.com/scott-renny/ai-job-search-automation-platform">Showcase repository ↗</a><a href="#top">Back to top ↑</a></div></footer></div></main></div>
-<script src="../assets/vendor/ucu/theme.js"></script>
-<script>document.addEventListener("DOMContentLoaded",function(){UCU.theme.init();});</script>
-<script src="../assets/vendor/ucu/app-shell.js"></script><script src="../assets/js/public-shell.js"></script></body></html>
+</div><footer><p>© 2026 Scott Renny · Cybersecurity engineering portfolio</p><div><a href="../index.html">Home</a><a href="../journal/index.html">Journal</a><a href="https://github.com/scott-renny/ai-job-search-automation-platform">Showcase repository ↗</a><a href="#top">Back to top ↑</a></div></footer></div></main></div>
+
+
+<script>document.addEventListener('DOMContentLoaded', function () {
+  var header = document.querySelector('.darkstar-header');
+  if (!header) return;
+  var button = header.querySelector('.darkstar-menu');
+  var nav = header.querySelector('.darkstar-navigation');
+  var mobile = window.matchMedia('(max-width: 760px)');
+  function close(returnFocus) {
+    button.setAttribute('aria-expanded', 'false');
+    nav.classList.remove('is-open');
+    if (returnFocus) button.focus();
+  }
+  button.addEventListener('click', function () {
+    var open = button.getAttribute('aria-expanded') !== 'true';
+    button.setAttribute('aria-expanded', String(open));
+    nav.classList.toggle('is-open', open);
+  });
+  header.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') close(true);
+  });
+  nav.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () { close(false); });
+  });
+  mobile.addEventListener('change', function () { close(nav.contains(document.activeElement)); });
+  var theme = header.querySelector('[data-darkstar-theme]');
+  function syncTheme() {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    theme.textContent = dark ? 'Light mode' : 'Dark mode';
+    theme.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  theme.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('ucu-theme', next); } catch (error) { /* Theme still applies. */ }
+    syncTheme();
+  });
+  syncTheme();
+});
+</script></body></html>
